@@ -35,7 +35,7 @@ namespace Terrain
 
         private Mesh mesh;
 
-        public readonly List<Vector3> points = new();
+        //public readonly List<Vector3> points = new();
 
         private void OnDrawGizmos()
         {
@@ -58,7 +58,7 @@ namespace Terrain
             //}
         }
 
-        public void GenerateMesh()
+        void GenerateMesh()
         {
             if (mesh == null)
             {
@@ -89,7 +89,6 @@ namespace Terrain
                         noiseValue += noiseSettings[k].Amplitude * 2.0f *
                                         (Mathf.PerlinNoise((x + xshift) * noiseSettings[k].Frequency,
                                                            (y + yshift) * noiseSettings[k].Frequency) - 0.5f);
-
                     }
 
                     if (UseThreshold)
@@ -98,13 +97,10 @@ namespace Terrain
                         {
                             noiseValue = 0.0f;
                         }
-                    }
-                    //float height = noiseValue * Amp;
-                    
+                    }                    
 
                     vertices.Add(new Vector3(x, noiseValue, y));
-
-                    points.Add(new Vector3(x, noiseValue, y));
+                    //points.Add(new Vector3(x + xshift, noiseValue, y + yshift));
 
                     uvs.Add(new Vector2((x + xshift) / Size, (y + yshift) / Size));
 
