@@ -2,144 +2,155 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
-
-public class SimplePlane : MonoBehaviour
+namespace Terrain
 {
-    //Noise Layers
-    public List<NoiseSettings> noiseSettings = new List<NoiseSettings>();
+    [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshRenderer))]
 
-
-    [Range(1f, 10000f)]
-
-    public float Size = 1000.0f;
-
-    //[Range(0.001f, 1f)]
-    //public float noiseFrq;
-
-    //[Range(1, 300)]
-    //public float Amp;
-
-    [Range(10,255)]
-    public int Segments = 100;
-
-    public bool UseThreshold = false;
-
-    //[Range(0f, -100f)]
-    public float xshift = 0.0f;
-    //[Range(0f, -100f)]
-    public float yshift = 0.0f;
-
-    private Mesh mesh;
-
-    private void OnDrawGizmos()
+    public class SimplePlane : MonoBehaviour
     {
-        GenerateMesh();
+        //Noise Layers
+        public List<NoiseSettings> noiseSettings = new List<NoiseSettings>();
 
-        //float delta = Size / (Segments - 1);
 
-        //for (int i = 0; i < Segments; i++)
-        //{
-        //    for (int j = 0; j < Segments; j++)
-        //    {
-        //        float x = i * delta;
-        //        float y = j * delta;
-        //        float noise = Mathf.PerlinNoise(x, y);
+        [Range(1f, 10000f)]
 
-        //        Gizmos.color = Color.red;
-        //        Gizmos.DrawSphere(new Vector3(x, noise, y), 0.2f);
+        public float Size = 1000.0f;
 
-        //    }
-        //}
-    }
+        //[Range(0.001f, 1f)]
+        //public float noiseFrq;
 
-    void GenerateMesh()
-    {
-        if (mesh == null)
+        //[Range(1, 300)]
+        //public float Amp;
+
+        [Range(10, 255)]
+        public int Segments = 100;
+
+        public bool UseThreshold = false;
+
+        //[Range(0f, -100f)]
+        public float xshift = 0.0f;
+        //[Range(0f, -100f)]
+        public float yshift = 0.0f;
+
+        private Mesh mesh;
+
+        public readonly List<Vector3> points = new();
+
+        private void OnDrawGizmos()
         {
-            mesh = new Mesh();
-            mesh.name = "Terrain Mesh";
+            GenerateMesh();
+
+            //float delta = Size / (Segments - 1);
+
+            //for (int i = 0; i < Segments; i++)
+            //{
+            //    for (int j = 0; j < Segments; j++)
+            //    {
+            //        float x = i * delta;
+            //        float y = j * delta;
+            //        float noise = Mathf.PerlinNoise(x, y);
+
+            //        Gizmos.color = Color.red;
+            //        Gizmos.DrawSphere(new Vector3(x, noise, y), 0.2f);
+
+            //    }
+            //}
         }
-        else { mesh.Clear(); }
 
-        List<Vector3> vertices = new();
-        List<int> tris = new();
-        List<Vector2> uvs = new();
-
-
-        float delta = Size / (Segments - 1);
-
-        //Generate vertices
-        for (int i = 0; i < Segments; i++)
+        public void GenerateMesh()
         {
-            for (int j = 0; j < Segments; j++)
+            if (mesh == null)
             {
-                float x = i * delta;
-                float y = j * delta;
+                mesh = new Mesh();
+                mesh.name = "Terrain Mesh";
+            }
+            else { mesh.Clear(); }
 
-                //Perlin Noise
-                float noiseValue = 0.0f;
-                for (int k= 0; k < noiseSettings.Count; k++)
-                {
-                    noiseValue += noiseSettings[k].Amplitude * 2.0f *
-                                    (Mathf.PerlinNoise((x+xshift) * noiseSettings[k].Frequency,
-                                                       (y+yshift) * noiseSettings[k].Frequency) - 0.5f);
-                }
+            List<int> tris = new();
+            List<Vector2> uvs = new();
+            List<Vector3> vertices = new();
 
-                if (UseThreshold)
+            float delta = Size / (Segments - 1);
+
+
+            //Generate vertices
+            for (int i = 0; i < Segments; i++)
+            {
+                for (int j = 0; j < Segments; j++)
                 {
-                    if ((noiseValue < 0.0f))
+                    float x = i * delta;
+                    float y = j * delta;
+
+                    //Perlin Noise
+                    float noiseValue = 0.0f;
+                    for (int k = 0; k < noiseSettings.Count; k++)
                     {
-                        noiseValue = 0.0f;
+                        noiseValue += noiseSettings[k].Amplitude * 2.0f *
+                                        (Mathf.PerlinNoise((x + xshift) * noiseSettings[k].Frequency,
+                                                           (y + yshift) * noiseSettings[k].Frequency) - 0.5f);
+
                     }
+
+                    if (UseThreshold)
+                    {
+                        if ((noiseValue < 0.0f))
+                        {
+                            noiseValue = 0.0f;
+                        }
+                    }
+                    //float height = noiseValue * Amp;
+                    
+
+                    vertices.Add(new Vector3(x, noiseValue, y));
+
+                    points.Add(new Vector3(x, noiseValue, y));
+
+                    uvs.Add(new Vector2((x + xshift) / Size, (y + yshift) / Size));
+
                 }
-                //float height = noiseValue * Amp;
-
-                vertices.Add(new Vector3(x, noiseValue, y));
-                uvs.Add(new Vector2((x + xshift) / Size, (y + yshift) / Size));
-
             }
-        }
-        //Generate triangles
-        for (int i = 0;i < Segments-1; i++)
-        {
-            for (int j = 0;j < Segments-1; j++)
+            //Generate triangles
+            for (int i = 0; i < Segments - 1; i++)
             {
-                //"Upper Left"
-                int ul = j * Segments + i;
-                //"Upper Right"
-                int ur = ul + 1;
+                for (int j = 0; j < Segments - 1; j++)
+                {
+                    //"Upper Left"
+                    int ul = j * Segments + i;
+                    //"Upper Right"
+                    int ur = ul + 1;
 
-                //"Lower Left"
-                int ll = ul + Segments;
-                //"Lower Right"
-                int lr = ll + 1;
+                    //"Lower Left"
+                    int ll = ul + Segments;
+                    //"Lower Right"
+                    int lr = ll + 1;
 
-                //Triangles
-                tris.Add(ll);
-                tris.Add(ul);
-                tris.Add(ur);
+                    //Triangles
+                    tris.Add(ll);
+                    tris.Add(ul);
+                    tris.Add(ur);
 
-                tris.Add(ll);
-                tris.Add(ur);
-                tris.Add(lr);
+                    tris.Add(ll);
+                    tris.Add(ur);
+                    tris.Add(lr);
+                }
             }
+
+            mesh.SetVertices(vertices);
+            mesh.SetTriangles(tris, 0);
+            mesh.RecalculateNormals();
+            mesh.SetUVs(0, uvs);
+
+            GetComponent<MeshFilter>().sharedMesh = mesh;
+
         }
 
-        mesh.SetVertices(vertices);
-        mesh.SetTriangles(tris, 0);
-        mesh.RecalculateNormals();
-        mesh.SetUVs(0, uvs);
-        
-        GetComponent<MeshFilter>().sharedMesh = mesh;
+        private void Update()
+        {
+            GenerateMesh();
+            xshift += 0.01f;
+            yshift += 0.03f;
+        }
 
-    }
-
-    private void Update()
-    {
-        GenerateMesh();
-        xshift += 0.01f;
-        yshift += 0.01f;
     }
 }
