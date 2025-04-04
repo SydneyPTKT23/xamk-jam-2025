@@ -26,9 +26,9 @@ public class SimplePlane : MonoBehaviour
 
     public bool UseThreshold = false;
 
-    [Range(0f, -100f)]
+    //[Range(0f, -100f)]
     public float xshift = 0.0f;
-    [Range(0f, -100f)]
+    //[Range(0f, -100f)]
     public float yshift = 0.0f;
 
     private Mesh mesh;
@@ -139,6 +139,7 @@ public class SimplePlane : MonoBehaviour
     private void Update()
     {
         GenerateMesh();
-        xshift -= 1f;   
+        xshift += 0.01f;
+        yshift += 0.01f;
     }
 }
