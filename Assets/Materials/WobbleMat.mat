@@ -48,6 +48,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Jerma:
+        m_Texture: {fileID: 2800000, guid: 059766e344a8dd14bb8c8a7f91902ba1, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 9863972f7c3d5a84bb2640b5228f83d0, type: 3}
         m_Scale: {x: 150, y: 150}
@@ -64,10 +68,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_62400890208f43c9b6ef9afddbbd6316_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 059766e344a8dd14bb8c8a7f91902ba1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_e9679f64da064b5faee4d708784079da_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: da40e1aec74e7254e95d519964ae9116, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _WaveTwo:
+        m_Texture: {fileID: 2800000, guid: 37833e2ab35097048a8e8d26cabb4eff, type: 3}
+        m_Scale: {x: 150, y: 150}
+        m_Offset: {x: 100, y: 100}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
