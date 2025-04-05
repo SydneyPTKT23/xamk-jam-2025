@@ -14,9 +14,6 @@ public class PlayerController : MonoBehaviour
     [Space, Header("Turning")]
     [SerializeField] private float turnSpeed = 90.0f;
 
-    [Space, Header("Smooth")]
-    [SerializeField] private float smoothInputSpeed = 10.0f;
-
     private Vector3 m_currentDirection;
     private bool m_isMoving = false;
 
@@ -26,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController m_characterController;
     private InputHandler m_inputHandler;
 
+    private PlayerAnimationController m_playerAnimationController;
     private CameraController m_cameraController;
 
     private void Start()
@@ -33,6 +31,7 @@ public class PlayerController : MonoBehaviour
         m_characterController = GetComponent<CharacterController>();
         m_inputHandler = GetComponent<InputHandler>();
 
+        m_playerAnimationController = GetComponent<PlayerAnimationController>();
         m_cameraController = GetComponentInChildren<CameraController>();
 
         if (swimCurve == null || swimCurve.length == 0)
@@ -81,6 +80,11 @@ public class PlayerController : MonoBehaviour
         m_isMoving = true;
 
         m_currentDirection = m_inputHandler.InputVector.y > 0 ? transform.forward : -transform.forward;
+
+        if (m_inputHandler.HasInputY)
+        {
+            m_playerAnimationController.SetMoveTrigger();
+        }
     }
 
     private bool CanMove()

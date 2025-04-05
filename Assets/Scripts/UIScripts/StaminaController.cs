@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using FaS.DiverGame.Input;
 using UnityEngine;
-//using UnityEngine.UIElements;
 using UnityEngine.UI;
 
 namespace FaS.DiverGame.UI
@@ -10,23 +8,16 @@ namespace FaS.DiverGame.UI
     public class StaminaController : MonoBehaviour
     {
         public Slider staminaSlider;
+        public InputHandler input;
 
         public bool usingStamina = false;
 
         public float staminaDecreaseSpeed = 1.0f;
         public float staminaRechargeSpeed = 1.0f;
 
-
-        // Start is called before the first frame update
-        void Start()
+        private void Update()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (usingStamina)
+            if (input.HasInputY)
             {
                 DecreaseStamina();
             }
@@ -46,6 +37,4 @@ namespace FaS.DiverGame.UI
             staminaSlider.value += 0.0001f * staminaRechargeSpeed;
         }
     }
-
-
 }
