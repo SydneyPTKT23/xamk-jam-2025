@@ -1,10 +1,9 @@
+using FaS.DiverGame.Terrain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Terrain;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class HitBorder : MonoBehaviour
 {
@@ -34,8 +33,7 @@ public class HitBorder : MonoBehaviour
     {
         float countDown = 1f;
         while (countDown >= 0)
-        {
-            
+        {           
             float warp = Mathf.Lerp(0, 10, t) * Time.deltaTime;
             speed = Mathf.Lerp(0, 10, t);
 
@@ -48,7 +46,8 @@ public class HitBorder : MonoBehaviour
             countDown -= Time.smoothDeltaTime;
             yield return null;
         }
-        Player.transform.position = new Vector3(1024, 5, 1024);
+
+        Player.transform.position = new Vector3(1024, Player.transform.position.y, 1024);
         StartCoroutine(EndReset());
     }
 
