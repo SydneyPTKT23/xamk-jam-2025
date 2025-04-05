@@ -10,7 +10,7 @@ namespace FaS.DiverGame.UI
 
     public class MenuController : MonoBehaviour
     {
-        public GameObject StartButton;
+
 
         public void ExitGame()
         {
@@ -19,11 +19,29 @@ namespace FaS.DiverGame.UI
 
         public void StartGame()
         {
-            SceneManager.LoadScene(sceneName:"UIscene");
+        SceneManager.LoadScene(sceneName:"UIscene");
 
 
+            GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "CHICKEN JOCKEY.";
+            StartCoroutine(waitTime());
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
 
+        }
+
+        public void BackToMenu()
+        {
+            SceneManager.LoadScene(sceneName: "MainMenu");
+        }
+
+
+        IEnumerator waitTime()
+        {
+            yield return new WaitForSeconds(3);
+        }
+
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
         }
     }
 }
