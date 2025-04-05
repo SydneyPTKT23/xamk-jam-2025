@@ -33,9 +33,12 @@ namespace Terrain
         //[Range(0f, -100f)]
         public float yshift = 0.0f;
 
+        [Range (0f, 1f)]
+        public float waveSpeed = 0f;
+
         private Mesh mesh;
 
-        public readonly List<Vector3> points = new();
+        //public readonly List<Vector3> points = new();
 
         private void OnDrawGizmos()
         {
@@ -58,7 +61,7 @@ namespace Terrain
             //}
         }
 
-        public void GenerateMesh()
+        void GenerateMesh()
         {
             if (mesh == null)
             {
@@ -89,7 +92,6 @@ namespace Terrain
                         noiseValue += noiseSettings[k].Amplitude * 2.0f *
                                         (Mathf.PerlinNoise((x + xshift) * noiseSettings[k].Frequency,
                                                            (y + yshift) * noiseSettings[k].Frequency) - 0.5f);
-
                     }
 
                     if (UseThreshold)
@@ -98,15 +100,12 @@ namespace Terrain
                         {
                             noiseValue = 0.0f;
                         }
-                    }
-                    //float height = noiseValue * Amp;
-                    
+                    }                    
 
                     vertices.Add(new Vector3(x, noiseValue, y));
+                    //points.Add(new Vector3(x + xshift, noiseValue, y + yshift));
 
-                    points.Add(new Vector3(x, noiseValue, y));
-
-                    uvs.Add(new Vector2((x + xshift) / Size, (y + yshift) / Size));
+                    uvs.Add(new Vector2((x + xshift/10) / Size, (y + yshift/10) / Size));
 
                 }
             }
@@ -145,12 +144,11 @@ namespace Terrain
 
         }
 
-        private void Update()
+         void FixedUpdate()
         {
             GenerateMesh();
-            xshift += 0.01f;
-            yshift += 0.03f;
+            xshift += waveSpeed;
+            yshift += waveSpeed;
         }
-
     }
 }
