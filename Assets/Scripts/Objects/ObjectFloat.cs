@@ -5,15 +5,18 @@ using UnityEngine;
 
 public class ObjectFloat : MonoBehaviour
 {
-
-    float floatRange;
-    float floatSpeed;
+    [SerializeField] bool rotatable;
+    [SerializeField] float rotateSpeed;
 
     void Update()
     {
-        Vector3 upLimit = new Vector3(transform.position.x, transform.position.y + floatRange, transform.position.z);
-        Vector3 downLimit = new Vector3(transform.position.x, transform.position.y - floatRange, transform.position.z);
+        float s = Mathf.Sin(Time.time * 1);
 
-        transform.position = Vector3.Lerp(upLimit, downLimit, floatSpeed);
+        transform.position = new Vector3(transform.position.x, s, transform.position.z);
+
+        if (rotatable)
+        {
+            transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
+        }
     }
 }

@@ -33,6 +33,9 @@ namespace Terrain
         //[Range(0f, -100f)]
         public float yshift = 0.0f;
 
+        [Range (0f, 1f)]
+        public float waveSpeed = 0f;
+
         private Mesh mesh;
 
         //public readonly List<Vector3> points = new();
@@ -141,12 +144,11 @@ namespace Terrain
 
         }
 
-        private void Update()
+         void FixedUpdate()
         {
             GenerateMesh();
-            xshift += 0.01f;
-            yshift += 0.03f;
+            xshift += waveSpeed;
+            yshift += waveSpeed;
         }
-
     }
 }
