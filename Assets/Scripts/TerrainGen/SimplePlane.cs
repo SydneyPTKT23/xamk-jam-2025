@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Terrain
+namespace FaS.DiverGame.Terrain
 {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
@@ -38,7 +37,12 @@ namespace Terrain
 
         private Mesh mesh;
 
-        //public readonly List<Vector3> points = new();
+        public static SimplePlane Instance;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void OnDrawGizmos()
         {
@@ -144,11 +148,32 @@ namespace Terrain
 
         }
 
-         void FixedUpdate()
+        void FixedUpdate()
         {
             GenerateMesh();
             xshift += waveSpeed;
             yshift += waveSpeed;
+        }
+
+        public float GetHeightAtWorldPosition(Vector3 worldPos)
+        {
+            float x = worldPos.x;
+            float z = worldPos.z;
+
+            float noiseValue = 0.0f;
+            for (int k = 0; k < noiseSettings.Count; k++)
+            {
+                float frequency = noiseSettings[k].Frequency;
+                float amplitude = noiseSettings[k].Amplitude;
+
+                noiseValue += amplitude * 2.0f *
+                    (Mathf.PerlinNoise((x + xshift) * frequency, (z + yshift) * frequency) - 0.5f);
+            }
+
+            if (UseThreshold && noiseValue < 0f)
+                noiseValue = 0f;
+
+            return noiseValue;
         }
     }
 }
