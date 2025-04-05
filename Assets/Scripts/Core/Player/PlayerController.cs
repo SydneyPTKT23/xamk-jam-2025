@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [Space, Header("Smooth")]
     [SerializeField] private float smoothInputSpeed = 10.0f;
 
-    private Vector2 m_smoothInputVector;
+    private Vector3 m_currentDirection;
     private bool m_isMoving = false;
 
     private float m_moveTimer = 0f;
@@ -42,18 +42,17 @@ public class PlayerController : MonoBehaviour
                 new Keyframe(1.0f, 0f)
             );
         }
+
+        m_currentDirection = transform.forward;
     }
 
     private void Update()
     {
         RotatePlayer();
 
-        m_smoothInputVector = Vector2.Lerp(m_smoothInputVector, m_inputHandler.InputVector, Time.deltaTime * smoothInputSpeed);
-        Vector3 t_direction = m_smoothInputVector.y * transform.forward;
-
-        if (!m_isMoving && Time.time - m_elapsedMoveTime >= moveCooldown && m_inputHandler.HasInputY)
+        if (CanMove() && m_inputHandler.HasInputY)
         {
-            StartMove();
+            StartMovement();
         }
 
         if (m_isMoving)
@@ -63,7 +62,7 @@ public class PlayerController : MonoBehaviour
             float t_curveMultiplier = swimCurve.Evaluate(t);
             float t_speed = moveSpeed * t_curveMultiplier;
 
-            Vector3 t_movement = t_direction * (t_speed * t_curveMultiplier);
+            Vector3 t_movement = m_currentDirection * (t_speed * t_curveMultiplier);
             m_characterController.Move(t_movement * Time.deltaTime);
 
             if (m_moveTimer >= moveDuration)
@@ -73,13 +72,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void StartMove()
+    private void StartMovement()
     {
         m_cameraController.TriggerEffects();
 
         m_moveTimer = 0f;
         m_elapsedMoveTime = Time.time;
         m_isMoving = true;
+
+        m_currentDirection = m_inputHandler.InputVector.y > 0 ? transform.forward : -transform.forward;
+    }
+
+    private bool CanMove()
+    {
+        return !m_isMoving && (Time.time - m_elapsedMoveTime) >= (moveDuration + moveCooldown);
     }
 
     void RotatePlayer()
