@@ -26,16 +26,16 @@ public class HitBorder : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("AAAAA");
         StartCoroutine(StartReset());
     }
 
 
     private IEnumerator StartReset()
     {
-        float countDown = 2f;
+        float countDown = 1f;
         while (countDown >= 0)
         {
+            
             float warp = Mathf.Lerp(0, 10, t) * Time.deltaTime;
             speed = Mathf.Lerp(0, 10, t);
 
@@ -43,6 +43,7 @@ public class HitBorder : MonoBehaviour
             {
                 plane.noiseSettings[j].Amplitude += warp * speed;
                 plane.noiseSettings[j].Frequency += warp * speed;
+
             }
             countDown -= Time.smoothDeltaTime;
             yield return null;
@@ -53,7 +54,7 @@ public class HitBorder : MonoBehaviour
 
     private IEnumerator EndReset()
     {
-        float countDown = 2f;
+        float countDown = 1f;
         while (countDown >= 0)
         {
             float warp = Mathf.Lerp(0, 10, t) * Time.deltaTime;
