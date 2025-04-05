@@ -24,17 +24,9 @@ public class HitBorder : MonoBehaviour
         ColliderList = GetComponentsInChildren<Collider>().ToList();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-
-            StartCoroutine(StartReset());
-        }
-    }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("AAAAA");
         StartCoroutine(StartReset());
     }
 
