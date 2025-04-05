@@ -105,7 +105,7 @@ namespace Terrain
                     vertices.Add(new Vector3(x, noiseValue, y));
                     //points.Add(new Vector3(x + xshift, noiseValue, y + yshift));
 
-                    uvs.Add(new Vector2((x + xshift) / Size, (y + yshift) / Size));
+                    uvs.Add(new Vector2((x + xshift/10) / Size, (y + yshift/10) / Size));
 
                 }
             }
