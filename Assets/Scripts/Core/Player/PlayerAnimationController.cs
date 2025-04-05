@@ -8,6 +8,12 @@ namespace FaS.DiverGame
         [SerializeField] private Animator m_animRight;
 
         private readonly int MoveParameterHash = Animator.StringToHash("BeginStroke");
+        private readonly int EatParameterHash = Animator.StringToHash("Eat");
+
+        public void SetEatTrigger()
+        {
+            m_animRight.SetTrigger(EatParameterHash);
+        }
 
         public void SetMoveTrigger()
         {
