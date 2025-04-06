@@ -1,3 +1,4 @@
+using FaS.DiverGame.Audio;
 using UnityEngine;
 
 namespace FaS.DiverGame.Core
@@ -30,6 +31,7 @@ namespace FaS.DiverGame.Core
                 m_renderer.sprite = currentFoodSprite;
                 m_renderer.enabled = true;
                 eat.Play();
+                SoundsOnPlayer.PlaySoundEffect(SoundType.EAT, 1);
             }
         }
 

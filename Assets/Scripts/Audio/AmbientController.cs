@@ -10,7 +10,8 @@ namespace FaS.DiverGame.Audio
         AMB_1,
         AMB_2,
         AMB_3,
-        AMB_4
+        AMB_4,
+        THUNDER
     }
 
     [RequireComponent(typeof(AudioSource))]
