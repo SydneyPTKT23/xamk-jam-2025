@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 namespace FaS.DiverGame
 {
     public enum SoundType
     {
+        SPLASH,
         STROKE,
         EAT,
-        AMB_1,
-        AMB_2,
-        AMB_3,
-        AMB_4,
-        POSRESET
+        WAVES,
+        RAIN
     }
 
     [RequireComponent(typeof(AudioSource))]
@@ -26,11 +25,16 @@ namespace FaS.DiverGame
             audioSource = GetComponent<AudioSource>();
         }
 
-        public static void PlaySound(SoundType type, int vol)
+        public static void PlaySoundEffect(SoundType type, int vol)
         {
             float pitchVar = Random.Range(0.95f, 1.05f);
             instance.audioSource.pitch = pitchVar;
             instance.audioSource.PlayOneShot(instance.soundList[(int) type], vol);
+        }
+        public static void PlayLoop(SoundType type, int vol)
+        {
+            instance.audioSource.loop = true;
+            instance.audioSource.PlayOneShot(instance.soundList[(int)type], vol);
         }
     }
 }

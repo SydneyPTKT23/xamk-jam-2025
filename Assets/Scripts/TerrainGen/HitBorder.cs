@@ -28,7 +28,6 @@ public class HitBorder : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         StartCoroutine(StartReset());
-        SoundsOnPlayer.PlaySound(SoundType.AMB_1, 1);
     }
 
 
