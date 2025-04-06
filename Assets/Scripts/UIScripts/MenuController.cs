@@ -10,6 +10,15 @@ namespace FaS.DiverGame.UI
 
     public class MenuController : MonoBehaviour
     {
+        public GameObject PauseMenu;
+
+        private void Update()
+        {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+            {
+                PauseMenu.SetActive(true);
+            } 
+        }
 
 
         public void ExitGame()
@@ -23,6 +32,7 @@ namespace FaS.DiverGame.UI
 
 
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "CHICKEN JOCKEY.";
+            GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "hi";
             //StartCoroutine(waitTime());
             //GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
 
@@ -31,7 +41,12 @@ namespace FaS.DiverGame.UI
         public void BackToMenu()
         {
             SceneManager.LoadScene(sceneName: "MainMenu");
-            GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
+            //GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
+        }
+
+        public void HidePauseMenu()
+        {
+            PauseMenu.SetActive(false);
         }
 
         /*

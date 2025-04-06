@@ -1,0 +1,14 @@
+{
+    "name": "FaS.DiverGame.Terrain",
+    "rootNamespace": "FaS.DiverGame.Terrain",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

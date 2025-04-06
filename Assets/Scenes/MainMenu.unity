@@ -431,6 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce7c38f33666174bab8c7190b80afc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PauseMenu: {fileID: 0}
 --- !u!4 &238562171
 Transform:
   m_ObjectHideFlags: 0
@@ -518,10 +519,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 0, g: 0, b: 0, a: 1}
+    topLeft: {r: 0.14150941, g: 0.11280703, b: 0.11280703, a: 1}
     topRight: {r: 0.027767902, g: 0.1495831, b: 0.4528302, a: 1}
     bottomLeft: {r: 1, g: 0.042452812, b: 0.042452812, a: 1}
-    bottomRight: {r: 0.18867922, g: 0.16962126, b: 0.027589884, a: 1}
+    bottomRight: {r: 0.509434, g: 0.20512094, b: 0.07929869, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -638,10 +639,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Epic game title
+  m_text: Nightswim
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d7f047900f93bbb4bb827bf2574764d2, type: 2}
-  m_sharedMaterial: {fileID: 475211492974520228, guid: d7f047900f93bbb4bb827bf2574764d2,
+  m_fontAsset: {fileID: 11400000, guid: 5b69f1f3687bab846ac9999b5f1be6b1, type: 2}
+  m_sharedMaterial: {fileID: 475211492974520228, guid: 5b69f1f3687bab846ac9999b5f1be6b1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -666,8 +667,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
