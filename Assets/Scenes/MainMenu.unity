@@ -617,7 +617,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 156.5}
-  m_SizeDelta: {x: 500, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &537299122
 MonoBehaviour:
@@ -639,7 +639,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Nightswim
+  m_text: NIGHTSWIM
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b69f1f3687bab846ac9999b5f1be6b1, type: 2}
   m_sharedMaterial: {fileID: 475211492974520228, guid: 5b69f1f3687bab846ac9999b5f1be6b1,
