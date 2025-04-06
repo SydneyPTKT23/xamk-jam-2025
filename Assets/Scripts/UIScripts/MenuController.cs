@@ -41,7 +41,7 @@ namespace FaS.DiverGame.UI
         public void BackToMenu()
         {
             SceneManager.LoadScene(sceneName: "MainMenu");
-            GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
+            //GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
         }
 
         public void HidePauseMenu()
