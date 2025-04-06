@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-namespace FaS.DiverGame
+namespace FaS.DiverGame.Audio
 {
     public enum AmbientType
     {
@@ -22,7 +22,10 @@ namespace FaS.DiverGame
         private AudioSource audioSource;
         public float speed = 1.0f;
 
-
+        private void Awake()
+        {
+            instance = this;
+        }
         // Update is called once per frame
         void Update()
         {
@@ -30,7 +33,7 @@ namespace FaS.DiverGame
             transform.Translate(Vector3.right * speed * Time.deltaTime);
         }
 
-        public static void PlayaMBIENCE(AmbientType type, int vol)
+        public static void PlayAmbience(AmbientType type, int vol)
         {
             float pitchVar = Random.Range(0.95f, 1.05f);
             instance.audioSource.pitch = pitchVar;

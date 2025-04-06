@@ -1,3 +1,5 @@
+using FaS.DiverGame;
+using FaS.DiverGame.Audio;
 using FaS.DiverGame.Input;
 using UnityEngine;
 
@@ -96,12 +98,14 @@ namespace FaS.DiverGame
         private void StartMovement()
         {
             m_cameraController.TriggerEffects();
+            SoundsOnPlayer.PlaySoundEffect(SoundType.STROKE, 1);
 
             m_moveTimer = 0f;
             m_elapsedMoveTime = Time.time;
             m_isMoving = true;
 
             m_currentDirection = m_inputHandler.InputVector.y > 0 ? transform.forward : -transform.forward;
+
 
             if (m_inputHandler.HasInputY)
             {
