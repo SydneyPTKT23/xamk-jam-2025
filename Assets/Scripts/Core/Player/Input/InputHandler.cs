@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,6 +13,8 @@ namespace FaS.DiverGame.Input
         public Vector2 InputVector { get; private set; }
         public bool HasInputX => InputVector.x != 0f;
         public bool HasInputY => InputVector.y != 0f;
+
+        public event Action OnInteractClicked;
 
         private readonly Coroutine m_disableActionCoroutine;
 
@@ -42,9 +45,9 @@ namespace FaS.DiverGame.Input
 
         public void OnInteract(InputAction.CallbackContext t_context)
         {
-            if (t_context.performed)
+            if (t_context.started)
             {
-                t_context.ReadValueAsButton();
+                OnInteractClicked?.Invoke();
             }
         }
 

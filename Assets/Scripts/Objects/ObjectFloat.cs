@@ -8,11 +8,23 @@ public class ObjectFloat : MonoBehaviour
     [SerializeField] bool rotatable;
     [SerializeField] float rotateSpeed;
 
-    void Update()
-    {
-        float s = Mathf.Sin(Time.time * 1);
+    public float amplitude = 0.5f;
+    public float frequency = 1f;
 
-        transform.position = new Vector3(transform.position.x, s, transform.position.z);
+    private Vector3 posOffset = new();
+    private Vector3 tempPos = new();
+
+    private void Start()
+    {
+        posOffset = transform.position;
+    }
+
+    private void Update()
+    {
+        tempPos = posOffset;
+        tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
+
+        transform.position = tempPos;
 
         if (rotatable)
         {
