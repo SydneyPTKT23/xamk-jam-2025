@@ -6,12 +6,15 @@ namespace FaS.DiverGame.Core
     {
         public SpriteRenderer m_renderer;
         public Sprite currentFoodSprite;
+        public ParticleSystem eat;
 
         private PlayerAnimationController m_controller;
 
         private void Start()
         {
             m_controller = GetComponentInParent<PlayerAnimationController>();
+            eat = GameObject.Find("eat").GetComponent<ParticleSystem>();
+            eat.Stop();
         }
 
         public void StartEating(Sprite t_foodSprite)
@@ -26,6 +29,7 @@ namespace FaS.DiverGame.Core
             {
                 m_renderer.sprite = currentFoodSprite;
                 m_renderer.enabled = true;
+                eat.Play();
             }
         }
 
@@ -35,6 +39,7 @@ namespace FaS.DiverGame.Core
             {
                 m_renderer.sprite = null;
                 m_renderer.enabled = false;
+                eat.Stop();
             }
         }
     }
