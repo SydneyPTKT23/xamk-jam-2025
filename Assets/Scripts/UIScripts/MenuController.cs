@@ -19,11 +19,11 @@ namespace FaS.DiverGame.UI
 
         public void StartGame()
         {
-        SceneManager.LoadScene(sceneName:"UIscene");
+        SceneManager.LoadScene(sceneName:"DebugScene");
 
 
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "CHICKEN JOCKEY.";
-            StartCoroutine(waitTime());
+            //StartCoroutine(waitTime());
             //GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
 
         }
@@ -34,13 +34,13 @@ namespace FaS.DiverGame.UI
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "keep going.";
         }
 
-
+        /*
         IEnumerator waitTime()
         {
             yield return new WaitForSeconds(3);
         }
 
-        /*
+        
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
