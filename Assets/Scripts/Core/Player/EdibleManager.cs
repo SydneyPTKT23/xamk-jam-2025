@@ -6,7 +6,7 @@ namespace FaS.DiverGame.Core
     {
         public SpriteRenderer m_renderer;
         public Sprite currentFoodSprite;
-        public ParticleSystem eat;
+        ParticleSystem eat;
 
         private PlayerAnimationController m_controller;
 
