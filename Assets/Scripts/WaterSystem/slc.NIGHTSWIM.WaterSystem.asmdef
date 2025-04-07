@@ -1,6 +1,6 @@
 {
-    "name": "FaS.DiverGame.Terrain",
-    "rootNamespace": "FaS.DiverGame.Terrain",
+    "name": "slc.NIGHTSWIM.WaterSystem",
+    "rootNamespace": "slc.NIGHTSWIM.WaterSystem",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

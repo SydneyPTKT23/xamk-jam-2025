@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public class ThunderstrikeEffect : MonoBehaviour
     {

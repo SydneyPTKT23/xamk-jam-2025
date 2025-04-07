@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace FaS.DiverGame.Input
+namespace slc.NIGHTSWIM.Input
 {
     public class InputHandler : MonoBehaviour, Controls.IGameActions
     {

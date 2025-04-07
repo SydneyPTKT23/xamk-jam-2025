@@ -1,6 +1,6 @@
 {
-    "name": "FaS.DiverGame.UI",
-    "rootNamespace": "FaS.DiverGame.UI",
+    "name": "slc.NIGHTSWIM.UI",
+    "rootNamespace": "slc.NIGHTSWIM.UI",
     "references": [
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:ef9f49e89e8a1be4daae3edff6c7ed47"

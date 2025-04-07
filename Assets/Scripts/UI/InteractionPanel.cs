@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FaS.DiverGame.UI
+namespace slc.NIGHTSWIM.UI
 {
     public class InteractionPanel : MonoBehaviour
     {

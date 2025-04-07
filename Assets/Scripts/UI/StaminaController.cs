@@ -1,8 +1,8 @@
-using FaS.DiverGame.Input;
+using slc.NIGHTSWIM.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FaS.DiverGame.UI
+namespace slc.NIGHTSWIM.UI
 {
 
     public class StaminaController : MonoBehaviour

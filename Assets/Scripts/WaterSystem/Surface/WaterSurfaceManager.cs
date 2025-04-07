@@ -1,68 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FaS.DiverGame.Terrain
+namespace slc.NIGHTSWIM.WaterSystem.Surface
 {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
-
-    public class SimplePlane : MonoBehaviour
+    public class WaterSurfaceManager : MonoBehaviour
     {
-        //Noise Layers
-        public List<NoiseSettings> noiseSettings = new List<NoiseSettings>();
+        public List<WaterSettings> waterSettings = new();
 
-
-        [Range(1f, 10000f)]
-
-        public float Size = 1000.0f;
-
-        //[Range(0.001f, 1f)]
-        //public float noiseFrq;
-
-        //[Range(1, 300)]
-        //public float Amp;
-
-        [Range(10, 255)]
-        public int Segments = 100;
+        [Range(1f, 10000f)] public float Size = 1000.0f;
+        [Range(10, 255)] public int Segments = 100;
 
         public bool UseThreshold = false;
-
-        //[Range(0f, -100f)]
         public float xshift = 0.0f;
-        //[Range(0f, -100f)]
         public float yshift = 0.0f;
 
-        [Range (0f, 1f)]
+        [Range(0f, 1f)]
         public float waveSpeed = 0f;
 
         private Mesh mesh;
 
-        public static SimplePlane Instance;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
-
         private void OnDrawGizmos()
         {
             GenerateMesh();
-
-            //float delta = Size / (Segments - 1);
-
-            //for (int i = 0; i < Segments; i++)
-            //{
-            //    for (int j = 0; j < Segments; j++)
-            //    {
-            //        float x = i * delta;
-            //        float y = j * delta;
-            //        float noise = Mathf.PerlinNoise(x, y);
-
-            //        Gizmos.color = Color.red;
-            //        Gizmos.DrawSphere(new Vector3(x, noise, y), 0.2f);
-
-            //    }
-            //}
         }
 
         void GenerateMesh()
@@ -80,7 +41,6 @@ namespace FaS.DiverGame.Terrain
 
             float delta = Size / (Segments - 1);
 
-
             //Generate vertices
             for (int i = 0; i < Segments; i++)
             {
@@ -91,11 +51,11 @@ namespace FaS.DiverGame.Terrain
 
                     //Perlin Noise
                     float noiseValue = 0.0f;
-                    for (int k = 0; k < noiseSettings.Count; k++)
+                    for (int k = 0; k < waterSettings.Count; k++)
                     {
-                        noiseValue += noiseSettings[k].Amplitude * 2.0f *
-                                        (Mathf.PerlinNoise((x + xshift) * noiseSettings[k].Frequency,
-                                                           (y + yshift) * noiseSettings[k].Frequency) - 0.5f);
+                        noiseValue += waterSettings[k].Amplitude * 2.0f *
+                                        (Mathf.PerlinNoise((x + xshift) * waterSettings[k].Frequency,
+                                                           (y + yshift) * waterSettings[k].Frequency) - 0.5f);
                     }
 
                     if (UseThreshold)
@@ -104,12 +64,10 @@ namespace FaS.DiverGame.Terrain
                         {
                             noiseValue = 0.0f;
                         }
-                    }                    
+                    }
 
                     vertices.Add(new Vector3(x, noiseValue, y));
-                    //points.Add(new Vector3(x + xshift, noiseValue, y + yshift));
-
-                    uvs.Add(new Vector2((x + xshift/10) / Size, (y + yshift/10) / Size));
+                    uvs.Add(new Vector2((x + xshift / 10) / Size, (y + yshift / 10) / Size));
 
                 }
             }
@@ -161,10 +119,10 @@ namespace FaS.DiverGame.Terrain
             float z = worldPos.z;
 
             float noiseValue = 0.0f;
-            for (int k = 0; k < noiseSettings.Count; k++)
+            for (int k = 0; k < waterSettings.Count; k++)
             {
-                float frequency = noiseSettings[k].Frequency;
-                float amplitude = noiseSettings[k].Amplitude;
+                float frequency = waterSettings[k].Frequency;
+                float amplitude = waterSettings[k].Amplitude;
 
                 noiseValue += amplitude * 2.0f *
                     (Mathf.PerlinNoise((x + xshift) * frequency, (z + yshift) * frequency) - 0.5f);

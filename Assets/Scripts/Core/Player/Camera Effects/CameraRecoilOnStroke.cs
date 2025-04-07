@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public class CameraRecoilOnStroke : MonoBehaviour
     {

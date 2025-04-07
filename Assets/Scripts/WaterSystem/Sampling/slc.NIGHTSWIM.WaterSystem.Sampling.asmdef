@@ -1,11 +1,8 @@
 {
-    "name": "FaS.DiverGame.Core",
-    "rootNamespace": "FaS.DiverGame.Core",
+    "name": "slc.NIGHTSWIM.WaterSystem.Sampling",
+    "rootNamespace": "slc.NIGHTSWIM.WaterSystem.Sampling",
     "references": [
-        "GUID:ef9f49e89e8a1be4daae3edff6c7ed47",
-        "GUID:2f2173a906dbee14ab41f9390771235f",
-        "GUID:3933fc0bb1c40d1469bba150c240fb2e",
-        "GUID:a5512d475192db445b7622c1c3adb726"
+        "GUID:41d3ad7cde9b1d843880b81b1bdcf459"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public class SpriteBillboard : MonoBehaviour
     {

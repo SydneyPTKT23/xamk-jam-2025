@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public class GlitchController : MonoBehaviour
     {
-
         public Material mat;
         public float noiseAmount;
         public float glitchStrength;

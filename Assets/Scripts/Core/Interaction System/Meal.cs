@@ -1,7 +1,7 @@
-using FaS.DiverGame.Core;
+using slc.NIGHTSWIM.Core;
 using UnityEngine;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public class Meal : InteractableBase
     {

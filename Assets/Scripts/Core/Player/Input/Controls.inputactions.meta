@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: Assets/Scripts/Core/Player/Input/Generated/Controls.cs
   wrapperClassName: 
-  wrapperCodeNamespace: FaS.DiverGame.Input
+  wrapperCodeNamespace: slc.NIGHTSWIM.Input

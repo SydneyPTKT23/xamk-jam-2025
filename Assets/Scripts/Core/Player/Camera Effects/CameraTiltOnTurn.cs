@@ -1,7 +1,7 @@
-using FaS.DiverGame.Input;
+using slc.NIGHTSWIM.Input;
 using UnityEngine;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public class CameraTiltOnTurn : MonoBehaviour
     {

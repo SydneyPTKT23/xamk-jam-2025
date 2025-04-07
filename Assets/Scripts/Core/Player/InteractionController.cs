@@ -1,10 +1,10 @@
-using FaS.DiverGame.Input;
-using FaS.DiverGame.UI;
+using slc.NIGHTSWIM.Input;
+using slc.NIGHTSWIM.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FaS.DiverGame.Core
+namespace slc.NIGHTSWIM.Core
 {
     public class InteractionController : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-namespace FaS.DiverGame.Audio
+namespace slc.NIGHTSWIM.Audio
 {
     public enum AmbientType
     {

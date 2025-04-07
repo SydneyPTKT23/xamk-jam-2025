@@ -1,9 +1,9 @@
-using FaS.DiverGame;
-using FaS.DiverGame.Audio;
-using FaS.DiverGame.Input;
+using slc.NIGHTSWIM;
+using slc.NIGHTSWIM.Audio;
+using slc.NIGHTSWIM.Input;
 using UnityEngine;
 
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     [RequireComponent(typeof(CharacterController), typeof(InputHandler))]
     public class PlayerController : MonoBehaviour
@@ -84,14 +84,16 @@ namespace FaS.DiverGame
 
         private void FollowWaterSurface()
         {
+            /*
             Vector3 position = transform.position;
-            float rawWaterHeight = Terrain.SimplePlane.Instance.GetHeightAtWorldPosition(position);
+            float rawWaterHeight = WaterSystem.SimplePlane.Instance.GetHeightAtWorldPosition(position);
 
             float targetY = rawWaterHeight + floatHeightOffset;
             float newY = Mathf.SmoothDamp(position.y, targetY, ref currentVelocityY, verticalSmoothTime);
 
             float verticalDelta = newY - position.y;
             m_characterController.Move(new Vector3(0f, verticalDelta, 0f));
+            */
         }
 
 

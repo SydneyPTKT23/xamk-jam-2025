@@ -1,4 +1,4 @@
-namespace FaS.DiverGame
+namespace slc.NIGHTSWIM
 {
     public interface IInteractable
     {

@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-namespace FaS.DiverGame.UI
+namespace slc.NIGHTSWIM.UI
 {
 
     public class MenuController : MonoBehaviour

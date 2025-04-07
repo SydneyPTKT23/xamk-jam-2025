@@ -1,7 +1,7 @@
-using FaS.DiverGame.Audio;
+using slc.NIGHTSWIM.Audio;
 using UnityEngine;
 
-namespace FaS.DiverGame.Core
+namespace slc.NIGHTSWIM.Core
 {
     public class EdibleManager : MonoBehaviour
     {
