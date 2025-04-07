@@ -90,13 +90,13 @@ MonoBehaviour:
   active: 1
   type:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 2
   intensity:
     m_OverrideState: 1
-    m_Value: 0.18
+    m_Value: 0.13
   response:
     m_OverrideState: 1
-    m_Value: 0.37
+    m_Value: 0.33
   texture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -131,7 +131,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: -0.1
+    m_Value: 0.225
   xMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -226,10 +226,10 @@ MonoBehaviour:
     m_Value: 3.6
   aperture:
     m_OverrideState: 1
-    m_Value: 4.6
+    m_Value: 4.7
   focalLength:
     m_OverrideState: 1
-    m_Value: 58
+    m_Value: 35
   bladeCount:
     m_OverrideState: 0
     m_Value: 5
@@ -258,4 +258,4 @@ MonoBehaviour:
     dimension: 1
   contribution:
     m_OverrideState: 1
-    m_Value: 0.32
+    m_Value: 0.232
