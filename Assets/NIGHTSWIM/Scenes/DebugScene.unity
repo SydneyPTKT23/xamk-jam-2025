@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: '''Interact'' (Space)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f5c701c6ba4aeb4f9e548da3791e372, type: 2}
   m_sharedMaterial: {fileID: 475211492974520228, guid: 2f5c701c6ba4aeb4f9e548da3791e372,
@@ -3655,7 +3655,7 @@ GameObject:
   - component: {fileID: 1650087427311981902}
   - component: {fileID: 1910790635939690605}
   m_Layer: 5
-  m_Name: Stamina Slider
+  m_Name: Stamina_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
