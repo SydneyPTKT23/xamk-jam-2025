@@ -156,7 +156,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _NoiseAmount: 1
-    - _NoiseScale: 0
+    - _NoiseScale: 0.2
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PixelationAmount: 126.2
@@ -176,7 +176,7 @@ Material:
     - _Transparency: 0.5
     - _WarpSpeed: 1
     - _WaterDepth: 128
-    - _WobbleStrength: 0.05
+    - _WobbleStrength: 0.005
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
