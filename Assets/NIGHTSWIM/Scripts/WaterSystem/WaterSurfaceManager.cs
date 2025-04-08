@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace slc.NIGHTSWIM.WaterSystem.Surface
+namespace slc.NIGHTSWIM.WaterSystem
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class WaterSurfaceManager : MonoBehaviour

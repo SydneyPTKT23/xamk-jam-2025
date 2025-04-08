@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace slc.NIGHTSWIM.WaterSystem.Surface
+namespace slc.NIGHTSWIM.WaterSystem
 {
     [CreateAssetMenu(fileName = "WaterSettings", menuName = "NIGHTSWIM/Water System/Water Settings", order = 0)]
     public class WaterSettings : ScriptableObject
