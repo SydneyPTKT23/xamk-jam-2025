@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37db37812072424c9f6938bec46430d, type: 3}
   m_Name: WaterSettings
   m_EditorClassIdentifier: 
-  Frequency: 0.051
-  Amplitude: 3.03
+  Frequency: 0.486
+  Amplitude: 1.45

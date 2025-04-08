@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/NIGHTSWIM/Scenes/DebugScene.unity
+    path: Assets/NIGHTSWIM/Scenes/SCN_DebugScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/NIGHTSWIM/Scenes/MainMenu.unity
+    path: Assets/NIGHTSWIM/Scenes/SCN_MainMenu.unity
     guid: b1e10053105476b44b6021853a6cd533
   - enabled: 0
-    path: Assets/NIGHTSWIM/Scenes/UIscene.unity
+    path: Assets/NIGHTSWIM/Scenes/SCN_UIscene.unity
     guid: 1d2403e8c02164e48af22eae4918f68f
   m_configObjects: {}

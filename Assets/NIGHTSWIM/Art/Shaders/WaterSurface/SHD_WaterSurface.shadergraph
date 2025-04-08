@@ -839,7 +839,7 @@
     "m_Group": {
         "m_Id": "5612767a74874ce3aa0640fdc83f814c"
     },
-    "m_Name": "FoamWobble",
+    "m_Name": "SHD_Water_FoamWobble",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1239,7 +1239,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "DepthFade",
+    "m_Name": "SHD_Water_DepthFade",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1284,7 +1284,7 @@
     "m_Group": {
         "m_Id": "7a7c6b4d9da94a9e8c78cbacd4484389"
     },
-    "m_Name": "FoamWobble",
+    "m_Name": "SHD_Water_FoamWobble",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
