@@ -10,11 +10,14 @@ namespace slc.NIGHTSWIM.Core
         public float floatSmoothSpeed = 2f;
         public bool alignToSurface = false;
 
+        [Tooltip("Distance between sample points for normal calculation")]
+        public float sampleDistance = 1f;
+
         private void Update()
         {
             Vector3 pos = transform.position;
 
-            // Get water height at current position
+            // Smooth floating
             float waterHeight = waterSurface.GetHeightAtWorldPosition(pos);
             float targetY = waterHeight + floatOffset;
             float smoothedY = Mathf.Lerp(pos.y, targetY, Time.deltaTime * floatSmoothSpeed);
@@ -22,24 +25,32 @@ namespace slc.NIGHTSWIM.Core
 
             if (alignToSurface)
             {
-                float delta = 0.25f; // balanced sample distance; adjust for your wave scale
+                // Sample in fixed world-space directions to avoid feedback loop
+                Vector3 sampleForward = pos + Vector3.forward * sampleDistance;
+                Vector3 sampleRight = pos + Vector3.right * sampleDistance;
 
-                // Get surrounding heights
-                float hL = waterSurface.GetHeightAtWorldPosition(new Vector3(pos.x - delta, pos.y, pos.z));
-                float hR = waterSurface.GetHeightAtWorldPosition(new Vector3(pos.x + delta, pos.y, pos.z));
-                float hD = waterSurface.GetHeightAtWorldPosition(new Vector3(pos.x, pos.y, pos.z - delta));
-                float hU = waterSurface.GetHeightAtWorldPosition(new Vector3(pos.x, pos.y, pos.z + delta));
+                float heightForward = waterSurface.GetHeightAtWorldPosition(sampleForward);
+                float heightRight = waterSurface.GetHeightAtWorldPosition(sampleRight);
 
-                // Compute surface normal instantly
-                Vector3 normal = new Vector3(hL - hR, 2f * delta, hD - hU).normalized;
+                sampleForward.y = heightForward;
+                sampleRight.y = heightRight;
+                pos.y = waterHeight;
 
-                // Keep forward direction consistent, project it onto the surface plane
-                Vector3 projectedForward = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(projectedForward, normal);
+                Vector3 toForward = sampleForward - pos;
+                Vector3 toRight = sampleRight - pos;
 
-                // Apply rotation smoothing only — keep it responsive but still smooth
-                float t_smooth = Mathf.Clamp01(Time.deltaTime * floatSmoothSpeed);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, t_smooth);
+                Vector3 normal = Vector3.Cross(toRight, toForward).normalized;
+
+                if (normal.sqrMagnitude > 0.0001f)
+                {
+                    // Align object's up with water surface normal, but preserve yaw
+                    Quaternion targetRotation = Quaternion.LookRotation(
+                        Vector3.ProjectOnPlane(transform.forward, normal),
+                        normal
+                    );
+
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * floatSmoothSpeed);
+                }
             }
         }
     }
