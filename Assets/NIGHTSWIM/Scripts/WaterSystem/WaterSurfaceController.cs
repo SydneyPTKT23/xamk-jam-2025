@@ -51,21 +51,21 @@ namespace slc.NIGHTSWIM.WaterSystem
             }
         }
 
-        public float GetHeight(Vector3 position)
+        public float GetHeight(Vector3 t_position)
         {
-            Vector3 scale = new(1 / transform.lossyScale.x, 0, 1 / transform.lossyScale.z);
-            Vector3 localPos = Vector3.Scale(position - transform.position, scale);
+            Vector3 t_scale = new(1 / transform.lossyScale.x, 0, 1 / transform.lossyScale.z);
+            Vector3 t_localPos = Vector3.Scale(t_position - transform.position, t_scale);
 
             // Get base X and Z in float
-            float lx = localPos.x;
-            float lz = localPos.z;
+            float lx = t_localPos.x;
+            float lz = t_localPos.z;
 
             // Clamp inside bounds
             lx = Mathf.Clamp(lx, 0, Dimension);
             lz = Mathf.Clamp(lz, 0, Dimension);
 
             // Convert to grid corners
-            Vector2Int[] points = new Vector2Int[]
+            Vector2Int[] t_points = new Vector2Int[]
             {
                 new Vector2Int(Mathf.FloorToInt(lx), Mathf.FloorToInt(lz)),
                 new Vector2Int(Mathf.FloorToInt(lx), Mathf.CeilToInt(lz)),
@@ -73,53 +73,51 @@ namespace slc.NIGHTSWIM.WaterSystem
                 new Vector2Int(Mathf.CeilToInt(lx), Mathf.CeilToInt(lz)),
             };
 
-            Vector3[] verts = m_cachedVertices;
-            float max = float.MinValue;
-            float[] distances = new float[4];
+            Vector3[] t_vertices = m_cachedVertices;
+            float t_max = float.MinValue;
+            float[] t_distances = new float[4];
 
             // Compute distances and max
             for (int i = 0; i < 4; i++)
             {
-                Vector3 p = new(points[i].x, 0, points[i].y);
-                distances[i] = Vector3.Distance(p, localPos);
-                max = Mathf.Max(max, distances[i]);
+                Vector3 p = new(t_points[i].x, 0, t_points[i].y);
+                t_distances[i] = Vector3.Distance(p, t_localPos);
+                t_max = Mathf.Max(t_max, t_distances[i]);
             }
 
-            float weightSum = Mathf.Epsilon;
-            float heightSum = 0f;
+            float t_weightSum = Mathf.Epsilon;
+            float t_heightSum = 0f;
 
             for (int i = 0; i < 4; i++)
             {
-                float weight = max - distances[i];
-                weightSum += weight;
-                heightSum += verts[Index(points[i].x, points[i].y)].y * weight;
+                float t_weight = t_max - t_distances[i];
+                t_weightSum += t_weight;
+                t_heightSum += t_vertices[Index(t_points[i].x, t_points[i].y)].y * t_weight;
             }
 
-            return heightSum * transform.lossyScale.y / weightSum;
+            return t_heightSum * transform.lossyScale.y / t_weightSum;
         }
 
         private Vector3[] GenerateVerts()
         {
-            Vector3[] verts = new Vector3[(Dimension + 1) * (Dimension + 1)];
-
-            // Equally distributed verts
+            // Generate vertices for the water surface
+            Vector3[] t_vertices = new Vector3[(Dimension + 1) * (Dimension + 1)];
             for (int x = 0; x <= Dimension; x++)
             {
                 for (int z = 0; z <= Dimension; z++)
                 {
-                    verts[Index(x, z)] = new Vector3(x, 0, z);
+                    t_vertices[Index(x, z)] = new Vector3(x, 0, z);
                 }
             }
 
-            return verts;
+            return t_vertices;
         }
 
         private int[] GenerateTries()
         {
-            _ = (Dimension + 1) * (Dimension + 1);
-            int[] tries = new int[Dimension * Dimension * 6]; // 2 tries per tile
-
+            int[] t_tries = new int[Dimension * Dimension * 6]; // 2 tries per tile
             int t = 0;
+
             for (int x = 0; x < Dimension; x++)
             {
                 for (int z = 0; z < Dimension; z++)
@@ -129,31 +127,26 @@ namespace slc.NIGHTSWIM.WaterSystem
                     int i2 = Index(x, z + 1);
                     int i3 = Index(x + 1, z + 1);
 
-                    tries[t++] = i0; tries[t++] = i1; tries[t++] = i3;
-                    tries[t++] = i0; tries[t++] = i3; tries[t++] = i2;
+                    t_tries[t++] = i0; t_tries[t++] = i1; t_tries[t++] = i3;
+                    t_tries[t++] = i0; t_tries[t++] = i3; t_tries[t++] = i2;
                 }
             }
 
-            return tries;
+            return t_tries;
         }
 
         private Vector2[] GenerateUVs()
         {
-            int count = (Dimension + 1) * (Dimension + 1);
-            Vector2[] uvs = new Vector2[count];
-
+            // Generate UVs for water mesh
+            Vector2[] t_uvs = new Vector2[(Dimension + 1) * (Dimension + 1)];
             for (int x = 0; x <= Dimension; x++)
             {
                 for (int z = 0; z <= Dimension; z++)
                 {
-                    float u = x / UVScale % 2f;
-                    float v = z / UVScale % 2f;
-
-                    uvs[Index(x, z)] = new Vector2(u > 1 ? 2 - u : u, v > 1 ? 2 - v : v);
+                    t_uvs[Index(x, z)] = new Vector2((float)x / Dimension, (float)z / Dimension);
                 }
             }
-
-            return uvs;
+            return t_uvs;
         }
 
         private int Index(int x, int z)
@@ -164,7 +157,7 @@ namespace slc.NIGHTSWIM.WaterSystem
         private void Update()
         {
             // Create job data for UpdateWaterHeightJob
-            UpdateWaterHeightJob updateJob = new UpdateWaterHeightJob
+            UpdateWaterHeightJob t_updateJob = new()
             {
                 Dimension = Dimension,
                 Octaves = new NativeArray<Octave>(Octaves, Allocator.TempJob),
@@ -173,8 +166,8 @@ namespace slc.NIGHTSWIM.WaterSystem
             };
 
             // Schedule and complete the job
-            JobHandle jobHandle = updateJob.Schedule(m_nativeVertices.Length, 64);
-            jobHandle.Complete();
+            JobHandle t_jobHandle = t_updateJob.Schedule(m_nativeVertices.Length, 64);
+            t_jobHandle.Complete();
 
             // Transfer the updated vertices back to the Mesh
             for (int i = 0; i < m_nativeVertices.Length; i++)
@@ -187,7 +180,7 @@ namespace slc.NIGHTSWIM.WaterSystem
             Mesh.RecalculateNormals();
 
             // Dispose of the temporary NativeArray
-            updateJob.Octaves.Dispose();
+            t_updateJob.Octaves.Dispose();
         }
 
         private void OnDestroy()
