@@ -23,7 +23,11 @@ namespace slc.NIGHTSWIM.WaterSystem
 
         private void InitializeMesh()
         {
-            Mesh = new Mesh { name = gameObject.name };
+            Mesh = new Mesh
+            {
+                name = gameObject.name,
+                indexFormat = UnityEngine.Rendering.IndexFormat.UInt32
+            };
 
             m_cachedVertices = GenerateVerts();
             Mesh.vertices = m_cachedVertices;
