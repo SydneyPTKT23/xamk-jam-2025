@@ -1,7 +1,10 @@
 {
     "name": "slc.NIGHTSWIM.WaterSystem",
     "rootNamespace": "slc.NIGHTSWIM.WaterSystem",
-    "references": [],
+    "references": [
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:ce358b48f0a3df84191530412ab42934"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

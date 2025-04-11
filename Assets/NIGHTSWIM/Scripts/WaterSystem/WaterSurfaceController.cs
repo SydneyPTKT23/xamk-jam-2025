@@ -1,5 +1,8 @@
 using System;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
+using Unity.Burst;
 
 namespace slc.NIGHTSWIM.WaterSystem
 {
@@ -7,7 +10,7 @@ namespace slc.NIGHTSWIM.WaterSystem
     {
         //Public Properties
         public int Dimension = 10;
-        public float UVScale = 2f;
+        public float UVScale = 2.0f;
         public Octave[] Octaves;
 
         //Mesh
@@ -15,6 +18,7 @@ namespace slc.NIGHTSWIM.WaterSystem
         protected Mesh Mesh;
 
         private Vector3[] m_cachedVertices;
+        private NativeArray<Vector3> m_nativeVertices;
 
         private void Start()
         {
@@ -38,6 +42,13 @@ namespace slc.NIGHTSWIM.WaterSystem
 
             MeshFilter = gameObject.AddComponent<MeshFilter>();
             MeshFilter.mesh = Mesh;
+
+            // Initialize the NativeArray for job execution
+            m_nativeVertices = new NativeArray<Vector3>((Dimension + 1) * (Dimension + 1), Allocator.Persistent);
+            for (int i = 0; i < m_cachedVertices.Length; i++)
+            {
+                m_nativeVertices[i] = m_cachedVertices[i];
+            }
         }
 
         public float GetHeight(Vector3 position)
@@ -118,8 +129,8 @@ namespace slc.NIGHTSWIM.WaterSystem
                     int i2 = Index(x, z + 1);
                     int i3 = Index(x + 1, z + 1);
 
-                    tries[t++] = i0; tries[t++] = i3; tries[t++] = i1;
-                    tries[t++] = i0; tries[t++] = i2; tries[t++] = i3;
+                    tries[t++] = i0; tries[t++] = i1; tries[t++] = i3;
+                    tries[t++] = i0; tries[t++] = i3; tries[t++] = i2;
                 }
             }
 
@@ -152,41 +163,40 @@ namespace slc.NIGHTSWIM.WaterSystem
 
         private void Update()
         {
-            float t_timer = Time.time;
-
-            for (int x = 0; x <= Dimension; x++)
+            // Create job data for UpdateWaterHeightJob
+            UpdateWaterHeightJob updateJob = new UpdateWaterHeightJob
             {
-                float normX = (float)x / Dimension;
+                Dimension = Dimension,
+                Octaves = new NativeArray<Octave>(Octaves, Allocator.TempJob),
+                Time = Time.time,
+                Vertices = m_nativeVertices
+            };
 
-                for (int z = 0; z <= Dimension; z++)
-                {
-                    float normZ = (float)z / Dimension;
-                    float y = 0f;
+            // Schedule and complete the job
+            JobHandle jobHandle = updateJob.Schedule(m_nativeVertices.Length, 64);
+            jobHandle.Complete();
 
-                    for (int o = 0; o < Octaves.Length; o++)
-                    {
-                        Octave octave = Octaves[o];
-                        if (octave.alternate)
-                        {
-                            float perl = Mathf.PerlinNoise(normX * octave.scale.x, normZ * octave.scale.y) * Mathf.PI * 2f;
-                            y += Mathf.Cos(perl + (octave.speed.magnitude * t_timer)) * octave.height;
-                        }
-                        else
-                        {
-                            float perl = Mathf.PerlinNoise(
-                                (normX * octave.scale.x) + (t_timer * octave.speed.x),
-                                (normZ * octave.scale.y) + (t_timer * octave.speed.y)) - 0.5f;
-
-                            y += perl * octave.height;
-                        }
-                    }
-
-                    m_cachedVertices[Index(x, z)] = new Vector3(x, y, z);
-                }
+            // Transfer the updated vertices back to the Mesh
+            for (int i = 0; i < m_nativeVertices.Length; i++)
+            {
+                m_cachedVertices[i] = m_nativeVertices[i];
             }
 
+            // Update the mesh with the new vertices
             Mesh.vertices = m_cachedVertices;
             Mesh.RecalculateNormals();
+
+            // Dispose of the temporary NativeArray
+            updateJob.Octaves.Dispose();
+        }
+
+        private void OnDestroy()
+        {
+            // Make sure to dispose of the NativeArray when the object is destroyed
+            if (m_nativeVertices.IsCreated)
+            {
+                m_nativeVertices.Dispose();
+            }
         }
 
         [Serializable]
