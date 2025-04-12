@@ -950,25 +950,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &771950454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6535020828469644547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09dba0edc2d329949ad28246aebf9fab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterSettings:
-  - {fileID: 11400000, guid: d105fa147328ad74b9a03d3f4c6e361e, type: 2}
-  size: 2048
-  segments: 255
-  useThreshold: 0
-  waveSpeed: 0.25
-  waveDirection: {x: 1, y: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,6 +1090,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1115303163
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 244469703889436521, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: Dimension
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 808355157753848210, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_Name
+      value: WaterSurfaceController
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1146156d5c53a2848a7690d7925fd027, type: 3}
 --- !u!1 &1139533510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,6 +1360,7 @@ GameObject:
   - component: {fileID: 1349124064}
   - component: {fileID: 1349124063}
   - component: {fileID: 1349124062}
+  - component: {fileID: 1349124067}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1325,11 +1380,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa949ab09de941b45b34bb2f78b4f407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterSurface: {fileID: 771950454}
-  floatOffset: 0.5
-  floatSmoothSpeed: 2
-  alignToSurface: 0
-  sampleDistance: 1
+  AirDrag: 1
+  WaterDrag: 10
+  AffectDirection: 1
+  AttachToSurface: 0
+  FloatPoints: []
 --- !u!65 &1349124063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1416,6 +1471,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1349124067
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349124061}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1359351060
 GameObject:
   m_ObjectHideFlags: 0
@@ -2270,8 +2352,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   turnSpeed: 45
-  floatHeightOffset: 0.55
-  verticalSmoothTime: 0.35
 --- !u!224 &801744114545973004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3603,14 +3683,13 @@ GameObject:
   - component: {fileID: 5677443563859771874}
   - component: {fileID: 3793942968475311714}
   - component: {fileID: 7240757050844802167}
-  - component: {fileID: 771950454}
   m_Layer: 0
   m_Name: WaterSurfaceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &6648560124941714993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4084,7 +4163,7 @@ Transform:
   m_GameObject: {fileID: 3130245828909027980}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1024, y: 3, z: 1024}
+  m_LocalPosition: {x: 250, y: 3, z: 250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4109,3 +4188,4 @@ SceneRoots:
   - {fileID: 5677443563859771874}
   - {fileID: 6182145200031046603}
   - {fileID: 1349124066}
+  - {fileID: 1115303163}

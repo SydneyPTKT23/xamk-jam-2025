@@ -37,7 +37,7 @@ namespace slc.NIGHTSWIM.WaterSystem
             Mesh.RecalculateNormals();
             Mesh.RecalculateBounds();
 
-            MeshFilter = gameObject.AddComponent<MeshFilter>();
+            MeshFilter = gameObject.GetComponent<MeshFilter>();
             MeshFilter.mesh = Mesh;
 
             // Initialize the NativeArray for job execution
