@@ -1124,10 +1124,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 244469703889436521, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: Dimension
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 808355157753848210, guid: 1146156d5c53a2848a7690d7925fd027,
         type: 3}
       propertyPath: m_Name
       value: WaterSurfaceController
+      objectReference: {fileID: 0}
+    - target: {fileID: 808355157753848210, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1571615913477894553, guid: 1146156d5c53a2848a7690d7925fd027,
         type: 3}
@@ -1179,6 +1199,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7748480698081225077, guid: 1146156d5c53a2848a7690d7925fd027,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -6478536213147159724, guid: e95aa9084e47b9344910a468c516dff6,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

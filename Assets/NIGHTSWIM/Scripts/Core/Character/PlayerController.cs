@@ -1,5 +1,4 @@
 using slc.NIGHTSWIM;
-using slc.NIGHTSWIM.Audio;
 using slc.NIGHTSWIM.Input;
 using UnityEngine;
 
@@ -94,7 +93,7 @@ namespace slc.NIGHTSWIM
         private void StartMovement()
         {
             m_cameraController.TriggerEffects();
-            SoundsOnPlayer.PlaySoundEffect(SoundType.STROKE, 1);
+            //SoundsOnPlayer.PlaySoundEffect(SoundType.STROKE, 1);
 
             m_moveTimer = 0f;
             m_elapsedMoveTime = Time.time;

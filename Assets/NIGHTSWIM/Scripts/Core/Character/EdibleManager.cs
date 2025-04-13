@@ -1,4 +1,3 @@
-using slc.NIGHTSWIM.Audio;
 using UnityEngine;
 
 namespace slc.NIGHTSWIM.Core
@@ -31,7 +30,7 @@ namespace slc.NIGHTSWIM.Core
                 m_renderer.sprite = currentFoodSprite;
                 m_renderer.enabled = true;
                 eat.Play();
-                SoundsOnPlayer.PlaySoundEffect(SoundType.EAT, 1.5f);
+                //SoundsOnPlayer.PlaySoundEffect(SoundType.EAT, 1.5f);
             }
         }
 
