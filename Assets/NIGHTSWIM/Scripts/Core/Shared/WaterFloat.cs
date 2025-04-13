@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using slc.NIGHTSWIM.WaterSystem;
 using slc.NIGHTSWIM.Utilities;
@@ -10,130 +7,138 @@ namespace slc.NIGHTSWIM.Core
     [RequireComponent(typeof(Rigidbody))]
     public class WaterFloat : MonoBehaviour
     {
-        //public properties
-        public float AirDrag = 1;
-        public float WaterDrag = 10;
-        public bool AffectDirection = true;
-        public bool AttachToSurface = false;
+        [Header("Public Properties")]
+        public float airDrag = 1.0f;
+        public float waterDrag = 10.0f;
+        public bool affectDirection = true;
+        public bool attachToSurface = false;
         public Transform[] FloatPoints;
 
-        //used components
-        protected Rigidbody Rigidbody;
-        protected WaterSurfaceController Waves;
+        [Space]
+        protected Rigidbody m_rigidbody;
+        [SerializeField] protected WaterSurfaceController m_waterSurfaceController;
 
-        //water line
         protected float WaterLine;
         protected Vector3[] WaterLinePoints;
 
-        //help Vectors
         protected Vector3 smoothVectorRotation;
         protected Vector3 TargetUp;
         protected Vector3 centerOffset;
 
-        public Vector3 Center { get { return transform.position + centerOffset; } }
+        public Vector3 Center => transform.position + centerOffset;
 
         // Start is called before the first frame update
         void Awake()
         {
-            //get components
-            Waves = FindObjectOfType<WaterSurfaceController>();
-            Rigidbody = GetComponent<Rigidbody>();
-            Rigidbody.useGravity = false;
+            // Get components
+            if (m_waterSurfaceController == null)
+                m_waterSurfaceController = FindObjectOfType<WaterSurfaceController>();
 
-            //compute center
+            m_rigidbody = GetComponent<Rigidbody>();
+            m_rigidbody.useGravity = false;
+
+            // Compute center
             WaterLinePoints = new Vector3[FloatPoints.Length];
             for (int i = 0; i < FloatPoints.Length; i++)
+            {
                 WaterLinePoints[i] = FloatPoints[i].position;
-            centerOffset = PhysicsHelper.GetCenter(WaterLinePoints) - transform.position;
+            }
 
+            centerOffset = PhysicsHelper.GetCenter(WaterLinePoints) - transform.position;
         }
 
         private void FixedUpdate()
         {
-            // Default water surface
-            var newWaterLine = 0f;
-            var pointUnderWater = false;
+            // Update water line points
+            UpdateWaterLinePoints();
 
-            //set WaterLinePoints and WaterLine
+            // Compute gravity and drag
+            UpdateGravityAndDrag();
+
+            // Apply rotation if under water
+            if (IsAnyPointUnderWater())
+                ApplyRotationToSurface();
+        }
+
+        private void UpdateWaterLinePoints()
+        {
+            float t_newWaterLine = 0f;
+
             for (int i = 0; i < FloatPoints.Length; i++)
             {
-                //height
-                WaterLinePoints[i] = FloatPoints[i].position;
-                WaterLinePoints[i].y = Waves.GetHeight(FloatPoints[i].position);
-                newWaterLine += WaterLinePoints[i].y / FloatPoints.Length;
-                if (WaterLinePoints[i].y > FloatPoints[i].position.y)
-                    pointUnderWater = true;
+                Vector3 t_floatPoint = FloatPoints[i].position;
+                WaterLinePoints[i].y = m_waterSurfaceController.GetHeight(t_floatPoint);
+                t_newWaterLine += WaterLinePoints[i].y / FloatPoints.Length;
             }
 
-            var waterLineDelta = newWaterLine - WaterLine;
-            WaterLine = newWaterLine;
+            WaterLine = t_newWaterLine;
+        }
 
-            //compute up vector
-            TargetUp = PhysicsHelper.GetNormal(WaterLinePoints);
+        private void UpdateGravityAndDrag()
+        {
+            m_rigidbody.drag = airDrag;
+            Vector3 t_gravity = Physics.gravity;
 
-            //gravity
-            var gravity = Physics.gravity;
-            Rigidbody.drag = AirDrag;
             if (WaterLine > Center.y)
             {
-                Rigidbody.drag = WaterDrag;
-                //under water
-                if (AttachToSurface)
+                m_rigidbody.drag = waterDrag;
+                if (attachToSurface)
                 {
-                    //attach to water surface
-                    Rigidbody.position = new Vector3(Rigidbody.position.x, WaterLine - centerOffset.y, Rigidbody.position.z);
+                    m_rigidbody.position = new Vector3(m_rigidbody.position.x, WaterLine - centerOffset.y, m_rigidbody.position.z);
                 }
                 else
                 {
-                    //go up
-                    gravity = AffectDirection ? TargetUp * -Physics.gravity.y : -Physics.gravity;
-                    transform.Translate(Vector3.up * waterLineDelta * 0.9f);
+                    t_gravity = affectDirection ? TargetUp * -Physics.gravity.y : -Physics.gravity;
+                    transform.Translate((WaterLine - Center.y) * 0.9f * Vector3.up);
                 }
             }
-            Rigidbody.AddForce(gravity * Mathf.Clamp(Mathf.Abs(WaterLine - Center.y), 0, 1));
 
-            //rotation
-            if (pointUnderWater)
+            m_rigidbody.AddForce(t_gravity * Mathf.Clamp(Mathf.Abs(WaterLine - Center.y), 0, 1));
+        }
+
+        private void ApplyRotationToSurface()
+        {
+            TargetUp = PhysicsHelper.GetNormal(WaterLinePoints);
+            TargetUp = Vector3.SmoothDamp(transform.up, TargetUp, ref smoothVectorRotation, 0.2f);
+            m_rigidbody.rotation = Quaternion.FromToRotation(transform.up, TargetUp) * m_rigidbody.rotation;
+        }
+
+        private bool IsAnyPointUnderWater()
+        {
+            for (int i = 0; i < WaterLinePoints.Length; i++)
             {
-                //attach to water surface
-                TargetUp = Vector3.SmoothDamp(transform.up, TargetUp, ref smoothVectorRotation, 0.2f);
-                Rigidbody.rotation = Quaternion.FromToRotation(transform.up, TargetUp) * Rigidbody.rotation;
+                if (WaterLinePoints[i].y > FloatPoints[i].position.y)
+                {
+                    return true;
+                }
             }
 
+            return false;
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.green;
-            if (FloatPoints == null)
-                return;
+            if (FloatPoints == null || m_waterSurfaceController == null || !Application.isPlaying) return;
 
+            Gizmos.color = Color.green;
             for (int i = 0; i < FloatPoints.Length; i++)
             {
                 if (FloatPoints[i] == null)
                     continue;
 
-                if (Waves != null)
-                {
+                // Draw WaterLine Points as cubes
+                Gizmos.color = Color.red;
+                Gizmos.DrawCube(WaterLinePoints[i], Vector3.one * 0.3f);
 
-                    //draw cube
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawCube(WaterLinePoints[i], Vector3.one * 0.3f);
-                }
-
-                //draw sphere
+                // Draw FloatPoints as spheres
                 Gizmos.color = Color.green;
                 Gizmos.DrawSphere(FloatPoints[i].position, 0.1f);
-
             }
 
-            //draw center
-            if (Application.isPlaying)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawCube(new Vector3(Center.x, WaterLine, Center.z), Vector3.one * 1f);
-                Gizmos.DrawRay(new Vector3(Center.x, WaterLine, Center.z), TargetUp * 1f);
-            }
+            // Draw center
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(new Vector3(Center.x, WaterLine, Center.z), Vector3.one * 1f);
+            Gizmos.DrawRay(new Vector3(Center.x, WaterLine, Center.z), TargetUp * 1f);
         }
     }
 }

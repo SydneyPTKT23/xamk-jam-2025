@@ -1,5 +1,5 @@
-using slc.NIGHTSWIM;
 using slc.NIGHTSWIM.Input;
+using slc.NIGHTSWIM.WaterSystem;
 using UnityEngine;
 
 namespace slc.NIGHTSWIM
@@ -7,6 +7,8 @@ namespace slc.NIGHTSWIM
     [RequireComponent(typeof(CharacterController), typeof(InputManager))]
     public class PlayerController : MonoBehaviour
     {
+        public AudioSource audioSource;
+
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 5.0f;
         [SerializeField] private float moveDuration = 0.6f;
@@ -15,6 +17,10 @@ namespace slc.NIGHTSWIM
 
         [Space, Header("Turning")]
         [SerializeField] private float turnSpeed = 90.0f;
+
+        public AudioClip strokeSfx;
+
+        public float FloatHeight = 1f;
 
         private Vector3 m_currentDirection;
         private bool m_isMoving = false;
@@ -27,6 +33,8 @@ namespace slc.NIGHTSWIM
 
         private PlayerAnimationController m_playerAnimationController;
         private CameraController m_cameraController;
+
+        public WaterSurfaceController ctrl;
 
         private void Start()
         {
@@ -50,6 +58,7 @@ namespace slc.NIGHTSWIM
         private void Update()
         {
             RotatePlayer();
+            FloatAboveWater();
 
             if (CanMove() && m_inputHandler.HasInputY)
             {
@@ -71,29 +80,26 @@ namespace slc.NIGHTSWIM
                     m_isMoving = false;
                 }
             }
-
-            FollowWaterSurface();
         }
 
-        private void FollowWaterSurface()
+        private void FloatAboveWater()
         {
-            /*
-            Vector3 position = transform.position;
-            float rawWaterHeight = WaterSystem.SimplePlane.Instance.GetHeightAtWorldPosition(position);
+            // Get the current height of the water at the object's position
+            float waterHeight = ctrl.GetHeight(transform.position);
 
-            float targetY = rawWaterHeight + floatHeightOffset;
-            float newY = Mathf.SmoothDamp(position.y, targetY, ref currentVelocityY, verticalSmoothTime);
+            // Calculate the new position, ensuring the object floats above the water
+            Vector3 newPosition = transform.position;
+            newPosition.y = waterHeight + FloatHeight;
 
-            float verticalDelta = newY - position.y;
-            m_characterController.Move(new Vector3(0f, verticalDelta, 0f));
-            */
+            // Apply the new position to the transform
+            transform.position = newPosition;
         }
 
 
         private void StartMovement()
         {
             m_cameraController.TriggerEffects();
-            //SoundsOnPlayer.PlaySoundEffect(SoundType.STROKE, 1);
+            audioSource.PlayOneShot(strokeSfx);
 
             m_moveTimer = 0f;
             m_elapsedMoveTime = Time.time;
