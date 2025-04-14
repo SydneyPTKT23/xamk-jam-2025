@@ -8,11 +8,16 @@ namespace slc.NIGHTSWIM.Core
         public Sprite currentFoodSprite;
         public ParticleSystem eat;
 
+        public AudioClip eatingSfx;
+
         private PlayerAnimationController m_controller;
+        private AudioSource m_audioSource;
 
         private void Start()
         {
             m_controller = GetComponentInParent<PlayerAnimationController>();
+            m_audioSource = GetComponent<AudioSource>();
+
             eat = GameObject.Find("eat").GetComponent<ParticleSystem>();
             eat.Stop();
         }
@@ -30,7 +35,7 @@ namespace slc.NIGHTSWIM.Core
                 m_renderer.sprite = currentFoodSprite;
                 m_renderer.enabled = true;
                 eat.Play();
-                //SoundsOnPlayer.PlaySoundEffect(SoundType.EAT, 1.5f);
+                m_audioSource.PlayOneShot(eatingSfx);
             }
         }
 

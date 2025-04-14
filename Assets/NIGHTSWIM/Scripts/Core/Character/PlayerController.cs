@@ -7,123 +7,102 @@ namespace slc.NIGHTSWIM
     [RequireComponent(typeof(CharacterController), typeof(InputManager))]
     public class PlayerController : MonoBehaviour
     {
+        [Header("References")]
         public AudioSource audioSource;
+        public WaterSurfaceController ctrl;
 
         [Header("Movement Settings")]
-        [SerializeField] private float moveSpeed = 5.0f;
+        [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float moveDuration = 0.6f;
         [SerializeField] private float moveCooldown = 0.5f;
-        [SerializeField] private AnimationCurve swimCurve = AnimationCurve.EaseInOut(0f, 0f, 1.0f, 1.0f);
+        [SerializeField] private AnimationCurve swimCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-        [Space, Header("Turning")]
-        [SerializeField] private float turnSpeed = 90.0f;
+        [Header("Turning")]
+        [SerializeField] private float turnSpeed = 90f;
 
+        [Header("Audio")]
         public AudioClip strokeSfx;
 
-        public float FloatHeight = 1f;
+        [Header("Floating")]
+        public float floatHeight = 1f;
 
-        private Vector3 m_currentDirection;
-        private bool m_isMoving = false;
+        private CharacterController characterController;
+        private InputManager inputManager;
+        private PlayerAnimationController animationController;
+        private CameraController cameraController;
 
-        private float m_moveTimer = 0f;
-        private float m_elapsedMoveTime = Mathf.NegativeInfinity;
-
-        private CharacterController m_characterController;
-        private InputManager m_inputHandler;
-
-        private PlayerAnimationController m_playerAnimationController;
-        private CameraController m_cameraController;
-
-        public WaterSurfaceController ctrl;
+        private Vector3 currentDirection;
+        private bool isMoving = false;
+        private float moveTimer = 0f;
+        private float lastMoveTime = Mathf.NegativeInfinity;
 
         private void Start()
         {
-            m_characterController = GetComponent<CharacterController>();
-            m_inputHandler = GetComponent<InputManager>();
+            characterController = GetComponent<CharacterController>();
+            inputManager = GetComponent<InputManager>();
+            animationController = GetComponent<PlayerAnimationController>();
+            cameraController = GetComponentInChildren<CameraController>();
 
-            m_playerAnimationController = GetComponent<PlayerAnimationController>();
-            m_cameraController = GetComponentInChildren<CameraController>();
+            currentDirection = transform.forward;
 
+            // Ensure default swim curve if not set
             if (swimCurve == null || swimCurve.length == 0)
             {
-                swimCurve = new AnimationCurve(
-                    new Keyframe(0f, 1.0f),
-                    new Keyframe(1.0f, 0f)
-                );
+                swimCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
             }
-
-            m_currentDirection = transform.forward;
         }
 
         private void Update()
         {
             RotatePlayer();
-            FloatAboveWater();
+            HandleMovement();
+        }
 
-            if (CanMove() && m_inputHandler.HasInputY)
+        private void HandleMovement()
+        {
+            if (CanMove() && inputManager.HasInputY)
             {
                 StartMovement();
             }
 
-            if (m_isMoving)
+            if (!isMoving) return;
+
+            moveTimer += Time.deltaTime;
+            float t = Mathf.Clamp01(moveTimer / moveDuration);
+            float speed = moveSpeed * swimCurve.Evaluate(t);
+
+            characterController.Move(speed * Time.deltaTime * currentDirection);
+
+            if (moveTimer >= moveDuration)
             {
-                m_moveTimer += Time.deltaTime;
-                float t = Mathf.Clamp01(m_moveTimer / moveDuration);
-                float t_curveMultiplier = swimCurve.Evaluate(t);
-                float t_speed = moveSpeed * t_curveMultiplier;
-
-                Vector3 t_movement = m_currentDirection * (t_speed * t_curveMultiplier);
-                m_characterController.Move(t_movement * Time.deltaTime);
-
-                if (m_moveTimer >= moveDuration)
-                {
-                    m_isMoving = false;
-                }
+                isMoving = false;
             }
         }
-
-        private void FloatAboveWater()
-        {
-            // Get the current height of the water at the object's position
-            float waterHeight = ctrl.GetHeight(transform.position);
-
-            // Calculate the new position, ensuring the object floats above the water
-            Vector3 newPosition = transform.position;
-            newPosition.y = waterHeight + FloatHeight;
-
-            // Apply the new position to the transform
-            transform.position = newPosition;
-        }
-
 
         private void StartMovement()
         {
-            m_cameraController.TriggerEffects();
+            cameraController.TriggerEffects();
             audioSource.PlayOneShot(strokeSfx);
 
-            m_moveTimer = 0f;
-            m_elapsedMoveTime = Time.time;
-            m_isMoving = true;
+            moveTimer = 0f;
+            lastMoveTime = Time.time;
+            isMoving = true;
 
-            m_currentDirection = m_inputHandler.InputVector.y > 0 ? transform.forward : -transform.forward;
+            currentDirection = inputManager.InputVector.y > 0 ? transform.forward : -transform.forward;
 
+            animationController.SetMoveTrigger();
+        }
 
-            if (m_inputHandler.HasInputY)
-            {
-                m_playerAnimationController.SetMoveTrigger();
-            }
+        private void RotatePlayer()
+        {
+            float yawInput = inputManager.InputVector.x;
+            float yawRotation = yawInput * turnSpeed * Time.deltaTime;
+            transform.Rotate(0f, yawRotation, 0f);
         }
 
         private bool CanMove()
         {
-            return !m_isMoving && (Time.time - m_elapsedMoveTime) >= (moveDuration + moveCooldown);
-        }
-
-        void RotatePlayer()
-        {
-            float t_yawInput = m_inputHandler.InputVector.x;
-            float t_yawDelta = t_yawInput * turnSpeed * Time.deltaTime;
-            transform.Rotate(0f, t_yawDelta, 0f);
+            return !isMoving && (Time.time - lastMoveTime) >= (moveDuration + moveCooldown);
         }
     }
 }
