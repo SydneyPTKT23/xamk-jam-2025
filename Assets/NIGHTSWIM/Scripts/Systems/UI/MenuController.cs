@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 namespace slc.NIGHTSWIM.UI
 {
-
     public class MenuController : MonoBehaviour
     {
         public GameObject PauseMenu;
@@ -13,7 +12,7 @@ namespace slc.NIGHTSWIM.UI
         {
             if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
             {
-                PauseMenu.SetActive(true);
+                PauseMenu.SetActive(!PauseMenu.activeSelf);
             } 
         }
 
@@ -25,7 +24,7 @@ namespace slc.NIGHTSWIM.UI
 
         public void StartGame()
         {
-        SceneManager.LoadScene(sceneName:"DebugScene");
+            SceneManager.LoadScene(sceneName:"DebugScene");
 
 
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "CHICKEN JOCKEY.";

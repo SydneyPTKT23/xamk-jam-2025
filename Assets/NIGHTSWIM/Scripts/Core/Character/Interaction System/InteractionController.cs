@@ -1,6 +1,5 @@
 using slc.NIGHTSWIM.Input;
-using System.Collections;
-using System.Collections.Generic;
+using slc.NIGHTSWIM.UI;
 using UnityEngine;
 
 namespace slc.NIGHTSWIM.Core
@@ -12,83 +11,74 @@ namespace slc.NIGHTSWIM.Core
         [SerializeField] private float raySphereRadius = 0.1f;
         [SerializeField] private LayerMask interactableLayer = ~0;
 
-        [Space, Header("UI")]
-        //[SerializeField] private InteractionPanel panel;
+        [Header("UI")]
+        [SerializeField] private InteractionPanel panel;
 
-        private InputManager m_inputHandler;
+        private InputManager m_inputManager;
         private Camera m_camera;
 
-        private bool isInteracting;
+        private bool m_isInteracting;
+        private InteractableBase m_currentInteractable;
 
-        public InteractableBase m_interactable;
+        private RaycastHit m_hitInfo;
 
         private void Awake()
         {
+            // Cache the camera component
             m_camera = GetComponentInChildren<Camera>();
-            m_inputHandler = GetComponent<InputManager>();
+            m_inputManager = GetComponent<InputManager>();
 
-            m_inputHandler.OnInteractClicked += StartInput;
+            m_inputManager.OnInteractClicked += OnInteractInput;
         }
 
         private void Update()
         {
+            // Check for interactables and handle input in one place
             CheckForInteractables();
-            CheckForInput();
+            HandleInteractionInput();
         }
 
         private void CheckForInteractables()
         {
-            Ray t_ray = new(m_camera.transform.position, m_camera.transform.forward);
-            bool t_hitSomething = Physics.SphereCast(t_ray, raySphereRadius, out RaycastHit t_hitInfo, rayDistance, interactableLayer);
+            // Perform a spherecast to detect interactable objects
+            bool t_hitSomething = Physics.SphereCast(m_camera.transform.position, raySphereRadius, m_camera.transform.forward,
+                out m_hitInfo, rayDistance, interactableLayer);
 
-            if (t_hitSomething)
+            // If an interactable object is detected, display the tooltip
+            if (t_hitSomething && m_hitInfo.transform.TryGetComponent(out InteractableBase t_interactable))
             {
-                InteractableBase t_interactable = t_hitInfo.transform.GetComponent<InteractableBase>();
-
-                if (t_interactable != null)
-                {
-                    m_interactable = t_interactable;
-                    //panel.SetLabel(t_interactable.TooltipMessage);
-                }
+                m_currentInteractable = t_interactable;
+                panel.SetLabel(t_interactable.TooltipMessage);
             }
             else
             {
-                //panel.ResetUI();
-                ResetInteractable();
+                // Reset the UI if no interactable object is found
+                panel.ResetUI();
+                m_currentInteractable = null;
             }
 
-            Debug.DrawRay(t_ray.origin, t_ray.direction * rayDistance, t_hitSomething ? Color.green : Color.red);
+            // Visualize the ray in the editor for debugging
+            Debug.DrawRay(m_camera.transform.position, m_camera.transform.forward * rayDistance, t_hitSomething ? Color.green : Color.red);
         }
 
-        private void Interact()
+        private void HandleInteractionInput()
         {
-            m_interactable.OnInteract();
-            ResetInteractable();
-        }
-
-        private void StartInput()
-        {
-            if(m_interactable == null)
-                return;
-
-            isInteracting = true;
-        }
-
-        private void CheckForInput()
-        {
-            if (isInteracting)
+            // If the player is interacting and the interactable is valid, invoke its interaction method
+            if (m_isInteracting && m_currentInteractable != null && m_currentInteractable.IsInteractable)
             {
-                if (!m_interactable.IsInteractable)
-                    return;
-
-                Interact();
-                isInteracting = false;
+                m_currentInteractable.OnInteract();
+                m_currentInteractable = null;
+                m_isInteracting = false;
             }
         }
 
-        private void ResetInteractable()
+        private void OnInteractInput()
         {
-            m_interactable = null;
+            // If an interactable is found, set the flag to start interacting
+            if (m_currentInteractable != null)
+            {
+                m_isInteracting = true;
+            }
         }
     }
 }

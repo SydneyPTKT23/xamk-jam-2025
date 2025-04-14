@@ -10,6 +10,7 @@ namespace slc.NIGHTSWIM.Core
         [SerializeField] private float regenRate = 10f;
         [SerializeField] private float drainPerSwim = 20f;
         [SerializeField] private float regenDelay = 2f;
+        [SerializeField] private float recoveryThreshold = 20f; // Amount of stamina required to recover
 
         [Header("Events")]
         public UnityEvent OnExhausted;
@@ -17,6 +18,7 @@ namespace slc.NIGHTSWIM.Core
 
         public float CurrentStamina { get; private set; }
         public bool IsExhausted => CurrentStamina <= 0f;
+        public bool IsHardExhausted { get; private set; }
 
         private float lastDrainTime;
         private bool wasExhausted;
@@ -31,11 +33,6 @@ namespace slc.NIGHTSWIM.Core
             RegenerateStamina();
         }
 
-        public bool CanSwim()
-        {
-            return CurrentStamina >= drainPerSwim;
-        }
-
         public void DrainStamina()
         {
             CurrentStamina = Mathf.Max(0f, CurrentStamina - drainPerSwim);
@@ -48,18 +45,39 @@ namespace slc.NIGHTSWIM.Core
             }
         }
 
-        private void RegenerateStamina()
+        public void RegenerateStamina()
         {
-            if (Time.time - lastDrainTime < regenDelay || IsExhausted)
-                return;
+            if (Time.time - lastDrainTime < regenDelay) return;
 
             CurrentStamina = Mathf.Min(maxStamina, CurrentStamina + regenRate * Time.deltaTime);
 
-            if (wasExhausted && CurrentStamina >= drainPerSwim)
+            if (IsHardExhausted && CurrentStamina >= recoveryThreshold)
+            {
+                RecoverFromExhaustion();
+            }
+
+            if (wasExhausted && CurrentStamina > 0f)
             {
                 wasExhausted = false;
                 OnRecovered?.Invoke();
             }
+        }
+
+        public void EnterExhaustion()
+        {
+            IsHardExhausted = true;
+            OnExhausted?.Invoke();
+        }
+
+        private void RecoverFromExhaustion()
+        {
+            IsHardExhausted = false;
+            OnRecovered?.Invoke();
+        }
+
+        public bool CanSwim()
+        {
+            return !IsHardExhausted;
         }
 
         public float GetStaminaNormalized() => CurrentStamina / maxStamina;

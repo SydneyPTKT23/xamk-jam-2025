@@ -24,7 +24,10 @@ namespace slc.NIGHTSWIM.Core
         public AudioClip strokeSfx;
 
         [Header("Floating")]
-        public float floatHeight = 1f;
+        public float floatHeight = 1.0f;
+        public float followSpeed = 5.0f;
+
+        private float targetHeight;
 
         [Header("Interaction")]
         [SerializeField] private LayerMask interactableLayer;
@@ -61,6 +64,7 @@ namespace slc.NIGHTSWIM.Core
         {
             RotatePlayer();
             HandleMovement();
+            FollowSurface();
         }
 
         private void HandleMovement()
@@ -123,6 +127,22 @@ namespace slc.NIGHTSWIM.Core
             return !isMoving
                 && (Time.time - lastMoveTime) >= (moveDuration + moveCooldown)
                 && stamina.CanSwim();
+        }
+
+        public void FollowSurface()
+        {
+            // Get the current height of the water at the object's position
+            float t_waterHeight = ctrl.GetHeight(transform.position);
+
+            // Calculate the target height based on the water level and the desired float height
+            targetHeight = t_waterHeight + floatHeight;
+
+            // Smoothly move the object towards the target height to prevent bouncing
+            Vector3 t_newPosition = transform.position;
+            t_newPosition.y = Mathf.Lerp(t_newPosition.y, targetHeight, followSpeed * Time.deltaTime);
+
+            // Apply the new position to the transform
+            transform.position = t_newPosition;
         }
     }
 }
