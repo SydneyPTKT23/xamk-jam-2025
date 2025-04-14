@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace slc.NIGHTSWIM
+namespace slc.NIGHTSWIM.Core
 {
     public class PlayerAnimationController : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using slc.NIGHTSWIM.CameraEffects;
 using UnityEngine;
 
-namespace slc.NIGHTSWIM
+namespace slc.NIGHTSWIM.Core
 {
     public class CameraController : MonoBehaviour
     {

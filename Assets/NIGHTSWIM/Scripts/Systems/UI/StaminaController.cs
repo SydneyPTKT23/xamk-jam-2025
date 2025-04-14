@@ -1,40 +1,34 @@
-using slc.NIGHTSWIM.Input;
+using slc.NIGHTSWIM.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace slc.NIGHTSWIM.UI
 {
-
+    [RequireComponent(typeof(Slider))]
     public class StaminaController : MonoBehaviour
     {
+        [Header("References")]
+        public PlayerStamina playerStamina;
         public Slider staminaSlider;
-        public InputManager input;
 
-        public bool usingStamina = false;
+        private void Start()
+        {
+            if (staminaSlider == null)
+                staminaSlider = GetComponent<Slider>();
 
-        public float staminaDecreaseSpeed = 1.0f;
-        public float staminaRechargeSpeed = 1.0f;
+            if (playerStamina == null)
+                playerStamina = FindObjectOfType<PlayerStamina>();
+
+            staminaSlider.minValue = 0f;
+            staminaSlider.maxValue = 1f;
+        }
 
         private void Update()
         {
-            if (input.HasInputY)
+            if (playerStamina != null)
             {
-                DecreaseStamina();
+                staminaSlider.value = playerStamina.GetStaminaNormalized();
             }
-            else 
-            { 
-                RecharceStamina();
-            }
-        }
-
-        public void DecreaseStamina()
-        {
-            staminaSlider.value -= 0.0001f * staminaDecreaseSpeed;
-        }
-
-        public void RecharceStamina()
-        {
-            staminaSlider.value += 0.0001f * staminaRechargeSpeed;
         }
     }
 }

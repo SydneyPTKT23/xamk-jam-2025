@@ -1,5 +1,4 @@
 using slc.NIGHTSWIM.Input;
-using slc.NIGHTSWIM.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +13,7 @@ namespace slc.NIGHTSWIM.Core
         [SerializeField] private LayerMask interactableLayer = ~0;
 
         [Space, Header("UI")]
-        [SerializeField] private InteractionPanel panel;
+        //[SerializeField] private InteractionPanel panel;
 
         private InputManager m_inputHandler;
         private Camera m_camera;
@@ -49,12 +48,12 @@ namespace slc.NIGHTSWIM.Core
                 if (t_interactable != null)
                 {
                     m_interactable = t_interactable;
-                    panel.SetLabel(t_interactable.TooltipMessage);
+                    //panel.SetLabel(t_interactable.TooltipMessage);
                 }
             }
             else
             {
-                panel.ResetUI();
+                //panel.ResetUI();
                 ResetInteractable();
             }
 

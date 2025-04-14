@@ -1,7 +1,6 @@
-using slc.NIGHTSWIM.Core;
 using UnityEngine;
 
-namespace slc.NIGHTSWIM
+namespace slc.NIGHTSWIM.Core
 {
     public class Meal : InteractableBase
     {

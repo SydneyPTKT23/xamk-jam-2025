@@ -2,7 +2,7 @@ using slc.NIGHTSWIM.Input;
 using slc.NIGHTSWIM.WaterSystem;
 using UnityEngine;
 
-namespace slc.NIGHTSWIM
+namespace slc.NIGHTSWIM.Core
 {
     [RequireComponent(typeof(CharacterController), typeof(InputManager))]
     public class PlayerController : MonoBehaviour
@@ -26,10 +26,15 @@ namespace slc.NIGHTSWIM
         [Header("Floating")]
         public float floatHeight = 1f;
 
+        [Header("Interaction")]
+        [SerializeField] private LayerMask interactableLayer;
+        [SerializeField] private float interactableCheckDistance = 2f;
+
         private CharacterController characterController;
         private InputManager inputManager;
         private PlayerAnimationController animationController;
         private CameraController cameraController;
+        private PlayerStamina stamina;
 
         private Vector3 currentDirection;
         private bool isMoving = false;
@@ -42,10 +47,10 @@ namespace slc.NIGHTSWIM
             inputManager = GetComponent<InputManager>();
             animationController = GetComponent<PlayerAnimationController>();
             cameraController = GetComponentInChildren<CameraController>();
+            stamina = GetComponent<PlayerStamina>();
 
             currentDirection = transform.forward;
 
-            // Ensure default swim curve if not set
             if (swimCurve == null || swimCurve.length == 0)
             {
                 swimCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
@@ -70,8 +75,20 @@ namespace slc.NIGHTSWIM
             moveTimer += Time.deltaTime;
             float t = Mathf.Clamp01(moveTimer / moveDuration);
             float speed = moveSpeed * swimCurve.Evaluate(t);
+            float distanceThisFrame = speed * Time.deltaTime;
 
-            characterController.Move(speed * Time.deltaTime * currentDirection);
+            // Prevent overshooting interactables
+            if (Physics.Raycast(transform.position, currentDirection, out RaycastHit hit, interactableCheckDistance, interactableLayer))
+            {
+                if (hit.distance < distanceThisFrame)
+                {
+                    // Only move up to just before the object
+                    distanceThisFrame = Mathf.Max(0f, hit.distance - 0.1f); // 0.1f safety margin
+                    isMoving = false;
+                }
+            }
+
+            characterController.Move(currentDirection * distanceThisFrame);
 
             if (moveTimer >= moveDuration)
             {
@@ -84,12 +101,13 @@ namespace slc.NIGHTSWIM
             cameraController.TriggerEffects();
             audioSource.PlayOneShot(strokeSfx);
 
+            stamina.DrainStamina();
+
             moveTimer = 0f;
             lastMoveTime = Time.time;
             isMoving = true;
 
             currentDirection = inputManager.InputVector.y > 0 ? transform.forward : -transform.forward;
-
             animationController.SetMoveTrigger();
         }
 
@@ -102,7 +120,9 @@ namespace slc.NIGHTSWIM
 
         private bool CanMove()
         {
-            return !isMoving && (Time.time - lastMoveTime) >= (moveDuration + moveCooldown);
+            return !isMoving
+                && (Time.time - lastMoveTime) >= (moveDuration + moveCooldown)
+                && stamina.CanSwim();
         }
     }
 }

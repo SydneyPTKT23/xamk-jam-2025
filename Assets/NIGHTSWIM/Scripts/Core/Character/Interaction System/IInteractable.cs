@@ -1,4 +1,4 @@
-namespace slc.NIGHTSWIM
+namespace slc.NIGHTSWIM.Core
 {
     public interface IInteractable
     {

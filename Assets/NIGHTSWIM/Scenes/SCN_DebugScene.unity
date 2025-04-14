@@ -1227,7 +1227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1139533511
 Transform:
   m_ObjectHideFlags: 0
@@ -2702,6 +2702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 4923753211722896046}
+  ctrl: {fileID: 325741146}
   moveSpeed: 4.8
   moveDuration: 1.4
   moveCooldown: 0.8
@@ -2731,8 +2732,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   turnSpeed: 45
   strokeSfx: {fileID: 8300000, guid: 0bc650e9b1d0fd6458d1d0a3388ff5e6, type: 3}
-  FloatHeight: 1
-  ctrl: {fileID: 325741146}
+  floatHeight: 1
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  interactableCheckDistance: 4
 --- !u!224 &801744114545973004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3214,7 +3218,7 @@ Transform:
   m_GameObject: {fileID: 6602014890472963705}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 250, y: 2, z: 255}
+  m_LocalPosition: {x: 250, y: 1, z: 260}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3233,6 +3237,7 @@ GameObject:
   - component: {fileID: 8949017612553957329}
   - component: {fileID: 4483498882053938766}
   - component: {fileID: 435675522389904312}
+  - component: {fileID: 8949017612553957331}
   - component: {fileID: 4923753211722896041}
   - component: {fileID: 8949017612553957330}
   - component: {fileID: 892194823}
@@ -3911,7 +3916,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &5677443563859771874
 Transform:
@@ -4607,6 +4612,28 @@ MonoBehaviour:
   waterSurfaceController: {fileID: 325741146}
   floatHeight: 0.56
   followSpeed: 5
+--- !u!114 &8949017612553957331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3130245828909027980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d31afc229e1db4c8f998304fb7451e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStamina: 100
+  regenRate: 10
+  drainPerSwim: 20
+  regenDelay: 2
+  OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRecovered:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
