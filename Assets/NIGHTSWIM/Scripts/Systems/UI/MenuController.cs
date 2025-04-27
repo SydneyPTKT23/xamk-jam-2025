@@ -16,16 +16,9 @@ namespace slc.NIGHTSWIM.UI
             } 
         }
 
-
-        public void ExitGame()
-        {
-            Application.Quit();
-        }
-
         public void StartGame()
         {
-            SceneManager.LoadScene(sceneName:"DebugScene");
-
+            SceneManager.LoadScene(sceneName: "DebugScene");
 
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "CHICKEN JOCKEY.";
             GameObject.Find("StartButton").GetComponentInChildren<TextMeshProUGUI>().text = "hi";
@@ -44,17 +37,5 @@ namespace slc.NIGHTSWIM.UI
         {
             PauseMenu.SetActive(false);
         }
-
-        /*
-        IEnumerator waitTime()
-        {
-            yield return new WaitForSeconds(3);
-        }
-
-        
-        void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }*/
     }
 }
