@@ -96,7 +96,7 @@ namespace slc.NIGHTSWIM.Systems
             if (t_audioManager == null)
                 return;
 
-            t_audioManager.SetFloat(t_parameter, t_valueInDb);
+            t_audioManager.SetVolume(t_parameter, t_valueInDb);
         }
 
         public static float GetVolume(string t_parameter)
@@ -104,7 +104,7 @@ namespace slc.NIGHTSWIM.Systems
             AudioManager t_audioManager = AudioManager;
             if (t_audioManager != null)
             {
-                t_audioManager.GetFloat(t_parameter, out float t_valueInDb);
+                t_audioManager.TryGetVolume(t_parameter, out float t_valueInDb);
                 return Mathf.Pow(10f, t_valueInDb / 20.0f);
             }
 
