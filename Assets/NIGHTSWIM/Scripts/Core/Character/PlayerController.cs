@@ -136,7 +136,7 @@ namespace slc.NIGHTSWIM.Core
             if (m_inputManager.HasInputY && m_stamina.CanSwim())
             {
                 Vector3 t_desiredDirection = m_inputManager.InputVector.y > 0 ? transform.forward : -transform.forward;
-                Vector3 t_horizontalVelocity = m_rb.velocity;
+                Vector3 t_horizontalVelocity = m_rb.linearVelocity;
                 t_horizontalVelocity.y = 0f;
 
                 if (t_horizontalVelocity.magnitude < passiveSwimSpeed)

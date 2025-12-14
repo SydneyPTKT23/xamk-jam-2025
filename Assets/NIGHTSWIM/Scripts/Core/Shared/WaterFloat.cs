@@ -76,12 +76,12 @@ namespace slc.NIGHTSWIM.Core
 
         private void UpdateGravityAndDrag()
         {
-            m_rigidbody.drag = airDrag;
+            m_rigidbody.linearDamping = airDrag;
             Vector3 t_gravity = Physics.gravity;
 
             if (WaterLine > Center.y)
             {
-                m_rigidbody.drag = waterDrag;
+                m_rigidbody.linearDamping = waterDrag;
                 if (attachToSurface)
                 {
                     m_rigidbody.position = new Vector3(m_rigidbody.position.x, WaterLine - centerOffset.y, m_rigidbody.position.z);

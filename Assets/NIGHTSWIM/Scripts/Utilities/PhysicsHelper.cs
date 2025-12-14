@@ -9,25 +9,25 @@ namespace slc.NIGHTSWIM.Utilities
             if (force == 0 || velocity.magnitude == 0)
                 return;
 
-            velocity += 0.2f * rigidbody.drag * velocity.normalized;
+            velocity += 0.2f * rigidbody.linearDamping * velocity.normalized;
 
             //force = 1 => need 1 s to reach velocity (if mass is 1) => force can be max 1 / Time.fixedDeltaTime
             force = Mathf.Clamp(force, -rigidbody.mass / Time.fixedDeltaTime, rigidbody.mass / Time.fixedDeltaTime);
 
-            if (rigidbody.velocity.magnitude == 0)
+            if (rigidbody.linearVelocity.magnitude == 0)
             {
                 rigidbody.AddForce(velocity * force, mode);
             }
             else
             {
-                var velocityProjectedToTarget = (velocity.normalized * Vector3.Dot(velocity, rigidbody.velocity) / velocity.magnitude);
+                var velocityProjectedToTarget = (velocity.normalized * Vector3.Dot(velocity, rigidbody.linearVelocity) / velocity.magnitude);
                 rigidbody.AddForce((velocity - velocityProjectedToTarget) * force, mode);
             }
         }
 
         public static void ApplyTorqueToReachRPS(Rigidbody rigidbody, Quaternion rotation, float rps, float force = 1)
         {
-            float radPerSecond = (rps * 2 * Mathf.PI) + (rigidbody.angularDrag * 20);
+            float radPerSecond = (rps * 2 * Mathf.PI) + (rigidbody.angularDamping * 20);
             rotation.ToAngleAxis(out _, out Vector3 rotationAxis);
 
             if (force == 0 || rotationAxis == Vector3.zero)
